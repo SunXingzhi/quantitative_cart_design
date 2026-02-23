@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>高德地图矢量绘制工具</title>
+    <style>
+        html, body, #container {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+       /* 按钮容器样式 */
+        #control-panel {
+            position: absolute;
+            top: 250px;
+            left: 400px;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 12px;
+            border-radius: 4px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+            max-width: 220px;
+        }
+        
+        /* 按钮样式 */
+        .control-btn {
+            display: block;
+            width: 100%;
+            padding: 6px 10px;
+            margin: 4px 0;
+            background: #0089ff;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 10px;
+            transition: background 0.3s;
+        }
+        
+        .control-btn:hover {
+            background: #0070d0;
+        }
+        
+        /* 提示信息 */
+        .info-tip {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 10px;
+            border-radius: 4px;
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            z-index: 1000;
+            font-size: 10px;
+            transform: translateX(-50%);
+        }
+    </style>
+</head>
+<body>
+    <!-- 地图容器 -->
+    <div id="container"></div> 
+
+    <!-- 控制面板 -->
+    <div id="control-panel">
+        <h4 style="margin: 0 0 10px 0; font-weight: 500">地图控制面板</h4>
+        <button class="control-btn" onclick="traffic.show()">显示路况</button> 
+        <button class="control-btn" onclick="traffic.hide()">隐藏路况</button>
+        <button class="control-btn" onclick="clearAll()">清除所有标记</button>
+    </div>
+
+    <!-- 安全配置 -->
+    <script type="text/javascript">
+        window._AMapSecurityConfig = {
+            securityJsCode: 'e750dca826775c8046edaa4f493e0144',
+            serviceHost: 'http://127.0.0.1:5500/_AMapService'
+        };
+    </script>
+
+     <!-- 提示信息 -->
+    <div class="info-tip">
+        在地图上右键点击：添加标记/缩放<br>
+        在标记上右键点击：删除标记
+    </div>
+
+    <!-- 高德地图API -->
+    <script type="text/javascript" src="https://webapi.amap.com/maps?v=1.4.15&key=1c7fb6fe10c43b761dba4addef31a85a&plugin=AMap.MouseTool,AMap.ToolBar,AMap.Geolocation"></script>
+
+    <script>
+        
+        // 全局变量
+        var map, traffic;
+        var markers = [];           // 存储所有标记的数组
+        var polylines = [];         // 存储所有连线的数组
+        var contextMenuPositon;     // 存储右键位置
+        var markerCoordinates = []; // 按编号顺序保存所有标记点的经纬度
+        
+        // 初始化地图
+        function initMap() {
+            map = new AMap.Map('container', {
+                zoom: 10,
+                center: [116.397428, 39.90923],
+                viewMode: '2D'
+            });
+              
+            // 初始化路况图层
+            traffic = new AMap.TileLayer.Traffic({
+                autoRefresh: true,
+                interval: 180
+            });
+            map.add(traffic);
+            
+            // 添加缩放工具条
+            AMap.plugin('AMap.ToolBar', function() { 
+                var toolbar = new AMap.ToolBar();
+                map.addControl(toolbar);
+            });
+            
+            // 添加定位组件
+            AMap.plugin('AMap.Geolocation', function() { 
+                var geolocation = new AMap.Geolocation();
+                map.addControl(geolocation);
+            });
+            
+            // 初始化右键菜单
+            initContextMenus();
+        }
+        
+               // 初始化右键菜单
+        function initContextMenus() {
+            // 定义地图右击菜单
+            var mapContextMenu = new AMap.ContextMenu();
+            
+            // 右键菜单项
+            mapContextMenu.addItem("放大一级", function() {
+                map.zoomIn();
+            }, 0);
+            
+            mapContextMenu.addItem("缩小一级", function() {
+                map.zoomOut();
+            }, 1);
+            
+            mapContextMenu.addItem("添加标记", function() {
+                console.log(markerCoordinates);
+                addMarker(contextMenuPositon);
+            }, 2);
+            
+            // 地图绑定鼠标右击事件
+            map.on('rightclick', function(e) {
+                mapContextMenu.open(map, e.lnglat);
+                contextMenuPositon = e.lnglat;
+            });
+        }
+        
+        // 添加标记函数（带序号和连线）
+        function addMarker(position) {
+            // 生成带序号的标记内容
+            const markerContent = `<div style="background: #ff5722; color: white; width: 30px; height: 30px; 
+                                    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+                                    font-weight: bold; box-shadow: 0 2px 5px rgba(0,0,0,0.3);">
+                                    ${markers.length + 1}
+                                    </div>`;
+    
+            const marker = new AMap.Marker({
+                map: map,
+                position: position,
+                content: markerContent
+            });
+    
+            // 为标记添加右键菜单
+            addMarkerContextMenu(marker);
+    
+            // 存储标记
+            markers.push(marker);
+    
+            // 将经纬度添加到 markerCoordinates 数组
+            markerCoordinates.push({
+                lng: position.getLng(),
+                lat: position.getLat()
+            });
+    
+            // 自动连线到前一个标记
+            if (markers.length > 1) {
+                const prevMarker = markers[markers.length - 2];
+                const polyline = new AMap.Polyline({
+                    path: [prevMarker.getPosition(), position],
+                    strokeColor: "#4CAF50",
+                    strokeWeight: 4,
+                    strokeStyle: "solid",
+                    map: map
+                });
+                polylines.push(polyline);
+            }
+    
+            console.log('添加标记:', position);
+        }
+        
+        
+    // 为标记添加右键菜单
+    function addMarkerContextMenu(marker) {
+        // 定义标记右击菜单
+        var markerContextMenu = new AMap.ContextMenu();
+
+        // 右键菜单项
+        markerContextMenu.addItem("移除标记", function () {
+            const targetIndex = markers.indexOf(marker);        // 获取目标标记的索引
+            const targetMarker = markers[targetIndex];          // 获取目标标记
+            const targetPosition = targetMarker.getPosition();  // 获取目标位置
+
+            // 1. 删除目标标记及其之后的所有标记
+            const removedMarkers = [];
+            for (let i = targetIndex; i < markers.length; i++) {
+                const m = markers[i];
+                map.remove(m);
+                removedMarkers.push(m);
+            }
+            markers = markers.slice(0, targetIndex); // 更新 markers 数组
+
+            // 2. 删除所有与这些标记相关的连线
+            const removedPolylines = [];
+            for (let i = 0; i < polylines.length; i++) {
+                const polyline = polylines[i];
+                const path = polyline.getPath(); // 获取路径数组
+                let contains = false;
+
+                // 检查路径是否包含被删除的标记点
+                for (const m of removedMarkers) {
+                    const pos = m.getPosition();
+                    for (const p of path) {
+                        if (p.getLng() === pos.getLng() && p.getLat() === pos.getLat()) {
+                            contains = true;
+                            break;
+                        }
+                    }
+                    if (contains) break;
+                }
+
+                if (contains) {
+                    map.remove(polyline);
+                    removedPolylines.push(polyline);
+                }
+            }
+
+            // 从 polylines 中移除被删除的连线
+            for (const p of removedPolylines) {
+                const index = polylines.indexOf(p);
+                if (index !== -1) polylines.splice(index, 1);
+            }
+
+            // 3. 更新 markerCoordinates 数组
+            markerCoordinates = markerCoordinates.slice(0, targetIndex);
+
+            // 4. 重新编号剩余的标记点
+            for (let i = 0; i < markers.length; i++) {
+                const m = markers[i];
+                const content = `<div style="background: #ff5722; color: white; width: 30px; height: 30px; 
+                                border-radius: 50%; display: flex; align-items: center; justify-content: center;
+                                font-weight: bold; box-shadow: 0 2px 5px rgba(0,0,0,0.3);">
+                                ${i + 1}
+                            </div>`;
+                m.setContent(content);
+                // 更新 markerCoordinates 中的经纬度
+                const position = m.getPosition();
+                markerCoordinates[i] = {
+                    lng: position.getLng(),
+                    lat: position.getLat()
+                };
+            }
+
+            console.log('移除标记:', targetIndex, '及后续标记');
+        }, 0);
+
+    // 绑定鼠标右击事件
+        marker.on('rightclick', function (e) {
+            markerContextMenu.open(map, e.lnglat);
+            e.stopPropagation();
+        });
+    }
+        
+    // 清除所有标记和连线
+    function clearAll() {
+        markers.forEach(marker => map.remove(marker));
+        polylines.forEach(polyline => map.remove(polyline));
+        markers = [];
+        polylines = [];
+        console.log('所有标记和连线已清除');
+    }
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        // 页面加载完成后初始化
+        window.onload = initMap;
+    </script>
+</body>
+</html>

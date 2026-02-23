@@ -1,0 +1,30 @@
+Failed to run `config` for mason.nvim
+
+...l/share/nvim/lazy/mason.nvim/lua/mason-registry/init.lua:146: attempt to perform arithmetic on field 'timestamp' (a nil value)
+
+# stacktrace:
+  - /mason.nvim/lua/mason-registry/init.lua:146 _in_ **refresh**
+  - /LazyVim/lua/lazyvim/plugins/lsp/init.lua:293 _in_ **config**
+  - /LazyVim/lua/lazyvim/util/treesitter.lua:125 _in_ **ensure_treesitter_cli**
+  - /LazyVim/lua/lazyvim/util/treesitter.lua:93 _in_ **build**
+  - /LazyVim/lua/lazyvim/plugins/treesitter.lua:94 _in_ **config**
+  - vim/_editor.lua:0 _in_ **cmd**
+Failed to run `config` for nvim-treesitter
+
+...l/share/nvim/lazy/mason.nvim/lua/mason-registry/init.lua:146: attempt to perform arithmetic on field 'timestamp' (a nil value)
+
+# stacktrace:
+  - /mason.nvim/lua/mason-registry/init.lua:146 _in_ **refresh**
+  - /LazyVim/lua/lazyvim/util/treesitter.lua:135 _in_ **ensure_treesitter_cli**
+  - /LazyVim/lua/lazyvim/util/treesitter.lua:93 _in_ **build**
+  - /LazyVim/lua/lazyvim/plugins/treesitter.lua:94 _in_ **config**
+  - vim/_editor.lua:0 _in_ **cmd**
+Error executing vim.schedule lua callback: ...im/lazy/mason.nvim/lua/mason-registry/sources/github.lua:55: Expected value but found T_END at character 1
+stack traceback:
+	[C]: in function 'decode'
+	...im/lazy/mason.nvim/lua/mason-registry/sources/github.lua:55: in function 'get_all_package_specs'
+	...l/share/nvim/lazy/mason.nvim/lua/mason-registry/init.lua:79: in function 'fn'
+	...m/lazy/mason.nvim/lua/mason-core/functional/function.lua:76: in function 'cached_specs'
+	...zy/mason-lspconfig.nvim/lua/mason-lspconfig/mappings.lua:14: in function 'get_mason_map'
+	...share/nvim/lazy/LazyVim/lua/lazyvim/plugins/lsp/init.lua:225: in function ''
+	vim/_editor.lua: in function <vim/_editor.lua:0>

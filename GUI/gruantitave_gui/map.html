@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>路径规划地图</title>
+	<style>
+		html, body, #container {
+			width: 100%;
+			height: 100%;
+			margin: 0;
+			padding: 0;
+		}
+		.amap-logo, .amap-copyright {
+			display: none;
+		}
+	</style>
+	<script src="https://webapi.amap.com/maps?v=2.0&key=f71b86d07011c6d39b98851fac25d2a7"></script>
+</head>
+<body>
+	<div id="container"></div>
+	<script>
+		let map = new AMap.Map('container', {
+			zoom: 14,
+			center: [116.397428, 39.90923], // 北京天安门
+			viewMode: '2D'
+		});
+
+		let polyline = null;
+		let waypoints = [];
+		let isSettingWaypoints = false;
+
+		// 暴露给 Python 调用的接口
+		window.setWaypointMode = function(enable) {
+			isSettingWaypoints = enable;
+			if (enable) {
+				map.setDefaultCursor("crosshair");
+			} else {
+				map.setDefaultCursor("default");
+			}
+		}
+
+		// 重置路径
+		window.resetWaypoints = function() {
+			waypoints = [];
+			if (polyline) {
+				map.remove(polyline);
+				polyline = null;
+			}
+		}
+
+		// 获取当前所有途径点
+		window.getWaypoints = function() {
+			return waypoints;
+		}
+
+		// 模拟“小车当前位置”
+		window.getCurrentCarPosition = function() {
+			return [116.397428, 39.90923]; // 可替换为真实 GPS 或动态位置
+		}
+
+		// 地图点击事件
+		map.on('click', function(e) {
+			if (!isSettingWaypoints) return;
+
+			let lnglat = [e.lnglat.lng, e.lnglat.lat];
+			waypoints.push(lnglat);
+
+			// 绘制连线
+			if (waypoints.length > 1) {
+				if (polyline) map.remove(polyline);
+				polyline = new AMap.Polyline({
+					path: waypoints,
+					strokeColor: "#FF0000",
+					strokeWeight: 5,
+					lineJoin: 'round'
+				});
+				map.add(polyline);
+			}
+
+			// 通知 Python（可选）
+			if (window.wx && window.wx.onWaypointAdded) {
+				window.wx.onWaypointAdded(JSON.stringify(lnglat));
+			}
+		});
+	</script>
+</body>
+</html>

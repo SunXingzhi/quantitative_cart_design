@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>高德地图api</title>
+    <style>
+        #container {
+            width:530px; 
+            height: 400px; 
+            margin: 0;
+            padding: 0;
+        }
+        
+        /* 按钮容器样式 */
+        #control-panel {
+            position: absolute;
+            top: 250px;
+            left: 400px;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 12px;
+            border-radius: 4px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+            max-width: 220px;
+        }
+        
+        /* 按钮样式 */
+        .control-btn {
+            display: block;
+            width: 100%;
+            padding: 6px 10px;
+            margin: 4px 0;
+            background: #0089ff;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            font-size: 10px;
+            transition: background 0.3s;
+        }
+        
+        .control-btn:hover {
+            background: #0070d0;
+        }
+        
+        /* 提示信息 */
+        .info-tip {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 10px;
+            border-radius: 4px;
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            z-index: 1000;
+            font-size: 10px;
+            transform: translateX(-50%);
+        }
+    </style>
+</head>
+<body>
+    <!-- 地图容器 -->
+    <div id="container"></div> 
+
+    <!-- 控制面板 -->
+    <div id="control-panel">
+        <h4 style="margin: 0 0 10px 0; font-weight: 500">地图控制面板</h4>
+        <button class="control-btn" onclick="traffic.show()">显示路况</button> 
+        <button class="control-btn" onclick="traffic.hide()">隐藏路况</button>
+        <button class="control-btn" onclick="clearAll()">清除所有标记</button>
+    </div>
+    
+    <!-- 提示信息 -->
+    <div class="info-tip">
+        在地图上右键点击：添加标记/缩放<br>
+        在标记上右键点击：删除标记
+    </div>
+
+    <!-- 安全配置 -->
+    <script type="text/javascript">
+        window._AMapSecurityConfig = {
+            securityJsCode: "e750dca826775c8046edaa4f493e0144"
+        };
+    </script>
+    <!-- 只加载 loader.js -->
+    <script src="https://webapi.amap.com/loader.js"></script>
+
+    <script>
+        // 全局变量
+        var map, traffic;
+        var markers = [];
+        var polylines = [];
+        var contextMenuPositon;
+        var markerCoordinates = [];
+        var currentVehicleMarker = null;
+
+        // 初始化地图
+        function initMap(zoom, center, viewMode) {
+            map = new AMap.Map('container', {
+                zoom: zoom || 13,
+                center: center || [116.397428, 39.90923],
+                viewMode: viewMode || '2D'
+            });
+            
+            // 初始化路况图层
+            traffic = new AMap.TileLayer.Traffic({
+                autoRefresh: true,
+                interval: 180
+            });
+            map.add(traffic);
+            
+            // 添加缩放工具条
+            AMap.plugin('AMap.ToolBar', function() { 
+                var toolbar = new AMap.ToolBar();
+                map.addControl(toolbar);
+            });
+            
+            // 添加定位组件
+            AMap.plugin('AMap.Geolocation', function() { 
+                var geolocation = new AMap.Geolocation();
+                map.addControl(geolocation);
+            });
+            
+            // 初始化右键菜单和小车标记
+            initContextMenus();
+            initVehicleMarker();
+        }
+
+        // 初始化小车标记
+        function initVehicleMarker() {
+            if (!currentVehicleMarker) {
+                currentVehicleMarker = new AMap.Marker({
+                    map: map,
+                    icon: new AMap.Icon({
+                        size: new AMap.Size(32, 32),
+                        image: "G:/GUI/car.png",
+                        imageSize: new AMap.Size(32, 32)
+                    }),
+                    title: "小车当前位置",
+                    zIndex: 999
+                });
+                currentVehicleMarker.hide(); // 初始隐藏（API 1.4.15 使用 hide()）
+            }
+        }
+
+        // 更新小车位置（Python将调用此函数）
+        function updateVehiclePosition(lng, lat) {
+            lng = parseFloat(lng);
+            lat = parseFloat(lat);
+            
+            if (isNaN(lng) || isNaN(lat)) {
+                console.error("Invalid coordinates:", lng, lat);
+                return;
+            }
+            
+            if (!currentVehicleMarker) {
+                initVehicleMarker();
+            }
+            
+            // 更新位置并显示（API 1.4.15 使用 show()）
+            currentVehicleMarker.setPosition([lng, lat]);
+            currentVehicleMarker.show(); // ✅ 修复关键点
+            
+            // 自动居中
+            map.setCenter([lng, lat]);
+            map.setZoom(16);
+        }
+        
+        // 初始化右键菜单
+        function initContextMenus() {
+            var mapContextMenu = new AMap.ContextMenu();
+            
+            mapContextMenu.addItem("放大一级", function() {
+                map.zoomIn();
+            }, 0);
+            
+            mapContextMenu.addItem("缩小一级", function() {
+                map.zoomOut();
+            }, 1);
+            
+            mapContextMenu.addItem("添加标记", function() {
+                addMarker(contextMenuPositon);
+            }, 2);
+            
+            map.on('rightclick', function(e) {
+                mapContextMenu.open(map, e.lnglat);
+                contextMenuPositon = e.lnglat;
+            });
+        }
+        
+        // 添加标记函数
+        function addMarker(position) {
+            const markerContent = `<div style="background: #ff5722; color: white; width: 30px; height: 30px; 
+                                    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+                                    font-weight: bold; box-shadow: 0 2px 5px rgba(0,0,0,0.3);">
+                                    ${markers.length + 1}
+                                    </div>`;
+    
+            const marker = new AMap.Marker({
+                map: map,
+                position: position,
+                content: markerContent
+            });
+    
+            addMarkerContextMenu(marker);
+            markers.push(marker);
+            
+            markerCoordinates.push({
+                lng: position.getLng(),
+                lat: position.getLat()
+            });
+            
+            // 自动连线
+            if (markers.length > 1) {
+                const prevMarker = markers[markers.length - 2];
+                const polyline = new AMap.Polyline({
+                    path: [prevMarker.getPosition(), position],
+                    strokeColor: "#4CAF50",
+                    strokeWeight: 4,
+                    strokeStyle: "solid",
+                    map: map
+                });
+                polylines.push(polyline);
+            }
+        }
+        
+        // 标记右键菜单
+        function addMarkerContextMenu(marker) {
+            var markerContextMenu = new AMap.ContextMenu();
+            
+            markerContextMenu.addItem("移除标记", function () {
+                const targetIndex = markers.indexOf(marker);
+                if (targetIndex === -1) return;
+                
+                // 删除目标及后续标记
+                const removedMarkers = markers.splice(targetIndex);
+                removedMarkers.forEach(m => map.remove(m));
+                
+                // 删除相关连线
+                for (let i = polylines.length - 1; i >= 0; i--) {
+                    const path = polylines[i].getPath();
+                    let shouldRemove = false;
+                    
+                    for (const m of removedMarkers) {
+                        const pos = m.getPosition();
+                        for (const p of path) {
+                            if (p.getLng() === pos.getLng() && p.getLat() === pos.getLat()) {
+                                shouldRemove = true;
+                                break;
+                            }
+                        }
+                        if (shouldRemove) break;
+                    }
+                    
+                    if (shouldRemove) {
+                        map.remove(polylines[i]);
+                        polylines.splice(i, 1);
+                    }
+                }
+                
+                // 更新坐标数组
+                markerCoordinates = markerCoordinates.slice(0, targetIndex);
+                
+                // 重新编号
+                for (let i = 0; i < markers.length; i++) {
+                    const content = `<div style="background: #ff5722; color: white; width: 30px; height: 30px; 
+                                    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+                                    font-weight: bold; box-shadow: 0 2px 5px rgba(0,0,0,0.3);">
+                                    ${i + 1}
+                                </div>`;
+                    markers[i].setContent(content);
+                    const pos = markers[i].getPosition();
+                    markerCoordinates[i] = {
+                        lng: pos.getLng(),
+                        lat: pos.getLat()
+                    };
+                }
+            }, 0);
+            
+            marker.on('rightclick', function (e) {
+                markerContextMenu.open(map, e.lnglat);
+                e.stopPropagation();
+            });
+        }
+        
+        // 清除所有标记
+        function clearAll() {
+            markers.forEach(marker => map.remove(marker));
+            polylines.forEach(polyline => map.remove(polyline));
+            markers = [];
+            polylines = [];
+            markerCoordinates = [];
+            
+            // 隐藏小车标记
+            if (currentVehicleMarker) {
+                currentVehicleMarker.hide();
+            }
+            
+            console.log('所有标记和连线已清除');
+        }
+        
+        // 页面加载完成后初始化地图
+        window.onload = function() {
+            AMapLoader.load({
+                key: "1c7fb6fe10c43b761dba4addef31a85a",
+                version: "1.4.15"
+            }).then(() => {
+                initMap();
+                console.log("地图初始化成功");
+            }).catch(e => {
+                console.error("地图加载失败:", e);
+            });
+        };
+    </script>
+</body>
+</html>

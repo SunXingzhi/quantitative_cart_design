@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>高德JSAPI测试</title>
+	<!-- 替换成你的 JS API Key -->
+	<script src="https://webapi.amap.com/maps?v=2.0&key=7642d38e52254132be5d4452eca8daae"></script>
+</head>
+<body>
+	<div id="map" style="width:100%; height:500px;"></div>
+	<script>
+		setTimeout(() => {
+			try {
+				let map = new AMap.Map('map', { zoom: 3 });
+				alert('🎉 高德地图加载成功！Key 和安全密钥配置正确！');
+			} catch (e) {
+				alert('❌ 地图加载失败，请检查 Key 类型和安全密钥配置');
+				console.error(e);
+			}
+		}, 1000);
+	</script>
+</body>
+</html>
