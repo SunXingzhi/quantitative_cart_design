@@ -291,6 +291,8 @@ def is_valid_response(target_response_header):
 				#thread_stop_status	= 1
 				response_information    = None
                 return True
+            navigation_data_parsing_status  = 0
+
             
 def timeout_is_valid_response(target_response_header):
 	try:
