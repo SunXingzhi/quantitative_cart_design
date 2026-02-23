@@ -1,0 +1,4 @@
+D:/SVN/308respository/Source/Quantitative_Cart/Firmware/v2_0/build/CMakeFiles/Quantitative_Cart_Firmware.elf.dir
+D:/SVN/308respository/Source/Quantitative_Cart/Firmware/v2_0/build/CMakeFiles/bin.dir
+D:/SVN/308respository/Source/Quantitative_Cart/Firmware/v2_0/build/CMakeFiles/edit_cache.dir
+D:/SVN/308respository/Source/Quantitative_Cart/Firmware/v2_0/build/CMakeFiles/rebuild_cache.dir

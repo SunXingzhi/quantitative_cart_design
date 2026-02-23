@@ -1,0 +1,16 @@
+{
+    "folders": [
+        {
+            "path": "."
+        }
+    ],
+"settings": {
+        "files.associations": {
+                "*.dbclient-js": "javascript",
+                "delay.h": "c",
+                "stdarg.h": "c",
+                "motor.h": "c"
+        }
+},
+    "extensions": {}
+}

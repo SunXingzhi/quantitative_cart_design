@@ -1,0 +1,248 @@
+[
+{
+  "directory": "D:/SVN/308respository/Source/Quantitative_Cart/Firmware/v2_0/build",
+  "command": "\"D:/download/stm32_vscode_envirorment/10 2021.10/bin/arm-none-eabi-gcc.exe\" -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER @CMakeFiles/Quantitative_Cart_Firmware.elf.dir/includes_C.rsp  -mcpu=cortex-m3 -mthumb -fdata-sections -ffunction-sections -Os -g -g -o CMakeFiles/Quantitative_Cart_Firmware.elf.dir/Hardware_driver/OLED.c.obj -c D:/SVN/308respository/Source/Quantitative_Cart/Firmware/v2_0/Hardware_driver/OLED.c",
+  "file": "D:/SVN/308respository/Source/Quantitative_Cart/Firmware/v2_0/Hardware_driver/OLED.c",
+  "output": "CMakeFiles/Quantitative_Cart_Firmware.elf.dir/Hardware_driver/OLED.c.obj"
+},
+{
+  "directory": "D:/SVN/308respository/Source/Quantitative_Cart/Firmware/v2_0/build",
+  "command": "\"D:/download/stm32_vscode_envirorment/10 2021.10/bin/arm-none-eabi-gcc.exe\" -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER @CMakeFiles/Quantitative_Cart_Firmware.elf.dir/includes_C.rsp  -mcpu=cortex-m3 -mthumb -fdata-sections -ffunction-sections -Os -g -g -o CMakeFiles/Quantitative_Cart_Firmware.elf.dir/Hardware_driver/gps.c.obj -c D:/SVN/308respository/Source/Quantitative_Cart/Firmware/v2_0/Hardware_driver/gps.c",
+  "file": "D:/SVN/308respository/Source/Quantitative_Cart/Firmware/v2_0/Hardware_driver/gps.c",
+  "output": "CMakeFiles/Quantitative_Cart_Firmware.elf.dir/Hardware_driver/gps.c.obj"
+},
+{
+  "directory": "D:/SVN/308respository/Source/Quantitative_Cart/Firmware/v2_0/build",
+  "command": "\"D:/download/stm32_vscode_envirorment/10 2021.10/bin/arm-none-eabi-gcc.exe\" -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER @CMakeFiles/Quantitative_Cart_Firmware.elf.dir/includes_C.rsp  -mcpu=cortex-m3 -mthumb -fdata-sections -ffunction-sections -Os -g -g -o CMakeFiles/Quantitative_Cart_Firmware.elf.dir/Hardware_driver/motor.c.obj -c D:/SVN/308respository/Source/Quantitative_Cart/Firmware/v2_0/Hardware_driver/motor.c",
+  "file": "D:/SVN/308respository/Source/Quantitative_Cart/Firmware/v2_0/Hardware_driver/motor.c",
+  "output": "CMakeFiles/Quantitative_Cart_Firmware.elf.dir/Hardware_driver/motor.c.obj"
+},
+{
+  "directory": "D:/SVN/308respository/Source/Quantitative_Cart/Firmware/v2_0/build",
+  "command": "\"D:/download/stm32_vscode_envirorment/10 2021.10/bin/arm-none-eabi-gcc.exe\" -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER @CMakeFiles/Quantitative_Cart_Firmware.elf.dir/includes_C.rsp  -mcpu=cortex-m3 -mthumb -fdata-sections -ffunction-sections -Os -g -g -o CMakeFiles/Quantitative_Cart_Firmware.elf.dir/Software_package/Navigation.c.obj -c D:/SVN/308respository/Source/Quantitative_Cart/Firmware/v2_0/Software_package/Navigation.c",
+  "file": "D:/SVN/308respository/Source/Quantitative_Cart/Firmware/v2_0/Software_package/Navigation.c",
+  "output": "CMakeFiles/Quantitative_Cart_Firmware.elf.dir/Software_package/Navigation.c.obj"
+},
+{
+  "directory": "D:/SVN/308respository/Source/Quantitative_Cart/Firmware/v2_0/build",
+  "command": "\"D:/download/stm32_vscode_envirorment/10 2021.10/bin/arm-none-eabi-gcc.exe\" -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER @CMakeFiles/Quantitative_Cart_Firmware.elf.dir/includes_C.rsp  -mcpu=cortex-m3 -mthumb -fdata-sections -ffunction-sections -Os -g -g -o CMakeFiles/Quantitative_Cart_Firmware.elf.dir/Software_package/communication.c.obj -c D:/SVN/308respository/Source/Quantitative_Cart/Firmware/v2_0/Software_package/communication.c",
+  "file": "D:/SVN/308respository/Source/Quantitative_Cart/Firmware/v2_0/Software_package/communication.c",
+  "output": "CMakeFiles/Quantitative_Cart_Firmware.elf.dir/Software_package/communication.c.obj"
+},
+{
+  "directory": "D:/SVN/308respository/Source/Quantitative_Cart/Firmware/v2_0/build",
+  "command": "\"D:/download/stm32_vscode_envirorment/10 2021.10/bin/arm-none-eabi-gcc.exe\" -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER @CMakeFiles/Quantitative_Cart_Firmware.elf.dir/includes_C.rsp  -mcpu=cortex-m3 -mthumb -fdata-sections -ffunction-sections -Os -g -g -o CMakeFiles/Quantitative_Cart_Firmware.elf.dir/Software_package/delay.c.obj -c D:/SVN/308respository/Source/Quantitative_Cart/Firmware/v2_0/Software_package/delay.c",
+  "file": "D:/SVN/308respository/Source/Quantitative_Cart/Firmware/v2_0/Software_package/delay.c",
+  "output": "CMakeFiles/Quantitative_Cart_Firmware.elf.dir/Software_package/delay.c.obj"
+},
+{
+  "directory": "D:/SVN/308respository/Source/Quantitative_Cart/Firmware/v2_0/build",
+  "command": "\"D:/download/stm32_vscode_envirorment/10 2021.10/bin/arm-none-eabi-gcc.exe\" -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER @CMakeFiles/Quantitative_Cart_Firmware.elf.dir/includes_C.rsp  -mcpu=cortex-m3 -mthumb -fdata-sections -ffunction-sections -Os -g -g -o CMakeFiles/Quantitative_Cart_Firmware.elf.dir/Software_package/periphal_package.c.obj -c D:/SVN/308respository/Source/Quantitative_Cart/Firmware/v2_0/Software_package/periphal_package.c",
+  "file": "D:/SVN/308respository/Source/Quantitative_Cart/Firmware/v2_0/Software_package/periphal_package.c",
+  "output": "CMakeFiles/Quantitative_Cart_Firmware.elf.dir/Software_package/periphal_package.c.obj"
+},
+{
+  "directory": "D:/SVN/308respository/Source/Quantitative_Cart/Firmware/v2_0/build",
+  "command": "\"D:/download/stm32_vscode_envirorment/10 2021.10/bin/arm-none-eabi-gcc.exe\" -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER @CMakeFiles/Quantitative_Cart_Firmware.elf.dir/includes_C.rsp  -mcpu=cortex-m3 -mthumb -fdata-sections -ffunction-sections -Os -g -g -o CMakeFiles/Quantitative_Cart_Firmware.elf.dir/Software_package/pid.c.obj -c D:/SVN/308respository/Source/Quantitative_Cart/Firmware/v2_0/Software_package/pid.c",
+  "file": "D:/SVN/308respository/Source/Quantitative_Cart/Firmware/v2_0/Software_package/pid.c",
+  "output": "CMakeFiles/Quantitative_Cart_Firmware.elf.dir/Software_package/pid.c.obj"
+},
+{
+  "directory": "D:/SVN/308respository/Source/Quantitative_Cart/Firmware/v2_0/build",
+  "command": "\"D:/download/stm32_vscode_envirorment/10 2021.10/bin/arm-none-eabi-gcc.exe\" -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER @CMakeFiles/Quantitative_Cart_Firmware.elf.dir/includes_C.rsp  -mcpu=cortex-m3 -mthumb -fdata-sections -ffunction-sections -Os -g -g -o CMakeFiles/Quantitative_Cart_Firmware.elf.dir/Standard_periphal_library/source/stm32f10x_adc.c.obj -c D:/SVN/308respository/Source/Quantitative_Cart/Firmware/v2_0/Standard_periphal_library/source/stm32f10x_adc.c",
+  "file": "D:/SVN/308respository/Source/Quantitative_Cart/Firmware/v2_0/Standard_periphal_library/source/stm32f10x_adc.c",
+  "output": "CMakeFiles/Quantitative_Cart_Firmware.elf.dir/Standard_periphal_library/source/stm32f10x_adc.c.obj"
+},
+{
+  "directory": "D:/SVN/308respository/Source/Quantitative_Cart/Firmware/v2_0/build",
+  "command": "\"D:/download/stm32_vscode_envirorment/10 2021.10/bin/arm-none-eabi-gcc.exe\" -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER @CMakeFiles/Quantitative_Cart_Firmware.elf.dir/includes_C.rsp  -mcpu=cortex-m3 -mthumb -fdata-sections -ffunction-sections -Os -g -g -o CMakeFiles/Quantitative_Cart_Firmware.elf.dir/Standard_periphal_library/source/stm32f10x_bkp.c.obj -c D:/SVN/308respository/Source/Quantitative_Cart/Firmware/v2_0/Standard_periphal_library/source/stm32f10x_bkp.c",
+  "file": "D:/SVN/308respository/Source/Quantitative_Cart/Firmware/v2_0/Standard_periphal_library/source/stm32f10x_bkp.c",
+  "output": "CMakeFiles/Quantitative_Cart_Firmware.elf.dir/Standard_periphal_library/source/stm32f10x_bkp.c.obj"
+},
+{
+  "directory": "D:/SVN/308respository/Source/Quantitative_Cart/Firmware/v2_0/build",
+  "command": "\"D:/download/stm32_vscode_envirorment/10 2021.10/bin/arm-none-eabi-gcc.exe\" -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER @CMakeFiles/Quantitative_Cart_Firmware.elf.dir/includes_C.rsp  -mcpu=cortex-m3 -mthumb -fdata-sections -ffunction-sections -Os -g -g -o CMakeFiles/Quantitative_Cart_Firmware.elf.dir/Standard_periphal_library/source/stm32f10x_can.c.obj -c D:/SVN/308respository/Source/Quantitative_Cart/Firmware/v2_0/Standard_periphal_library/source/stm32f10x_can.c",
+  "file": "D:/SVN/308respository/Source/Quantitative_Cart/Firmware/v2_0/Standard_periphal_library/source/stm32f10x_can.c",
+  "output": "CMakeFiles/Quantitative_Cart_Firmware.elf.dir/Standard_periphal_library/source/stm32f10x_can.c.obj"
+},
+{
+  "directory": "D:/SVN/308respository/Source/Quantitative_Cart/Firmware/v2_0/build",
+  "command": "\"D:/download/stm32_vscode_envirorment/10 2021.10/bin/arm-none-eabi-gcc.exe\" -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER @CMakeFiles/Quantitative_Cart_Firmware.elf.dir/includes_C.rsp  -mcpu=cortex-m3 -mthumb -fdata-sections -ffunction-sections -Os -g -g -o CMakeFiles/Quantitative_Cart_Firmware.elf.dir/Standard_periphal_library/source/stm32f10x_cec.c.obj -c D:/SVN/308respository/Source/Quantitative_Cart/Firmware/v2_0/Standard_periphal_library/source/stm32f10x_cec.c",
+  "file": "D:/SVN/308respository/Source/Quantitative_Cart/Firmware/v2_0/Standard_periphal_library/source/stm32f10x_cec.c",
+  "output": "CMakeFiles/Quantitative_Cart_Firmware.elf.dir/Standard_periphal_library/source/stm32f10x_cec.c.obj"
+},
+{
+  "directory": "D:/SVN/308respository/Source/Quantitative_Cart/Firmware/v2_0/build",
+  "command": "\"D:/download/stm32_vscode_envirorment/10 2021.10/bin/arm-none-eabi-gcc.exe\" -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER @CMakeFiles/Quantitative_Cart_Firmware.elf.dir/includes_C.rsp  -mcpu=cortex-m3 -mthumb -fdata-sections -ffunction-sections -Os -g -g -o CMakeFiles/Quantitative_Cart_Firmware.elf.dir/Standard_periphal_library/source/stm32f10x_crc.c.obj -c D:/SVN/308respository/Source/Quantitative_Cart/Firmware/v2_0/Standard_periphal_library/source/stm32f10x_crc.c",
+  "file": "D:/SVN/308respository/Source/Quantitative_Cart/Firmware/v2_0/Standard_periphal_library/source/stm32f10x_crc.c",
+  "output": "CMakeFiles/Quantitative_Cart_Firmware.elf.dir/Standard_periphal_library/source/stm32f10x_crc.c.obj"
+},
+{
+  "directory": "D:/SVN/308respository/Source/Quantitative_Cart/Firmware/v2_0/build",
+  "command": "\"D:/download/stm32_vscode_envirorment/10 2021.10/bin/arm-none-eabi-gcc.exe\" -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER @CMakeFiles/Quantitative_Cart_Firmware.elf.dir/includes_C.rsp  -mcpu=cortex-m3 -mthumb -fdata-sections -ffunction-sections -Os -g -g -o CMakeFiles/Quantitative_Cart_Firmware.elf.dir/Standard_periphal_library/source/stm32f10x_dac.c.obj -c D:/SVN/308respository/Source/Quantitative_Cart/Firmware/v2_0/Standard_periphal_library/source/stm32f10x_dac.c",
+  "file": "D:/SVN/308respository/Source/Quantitative_Cart/Firmware/v2_0/Standard_periphal_library/source/stm32f10x_dac.c",
+  "output": "CMakeFiles/Quantitative_Cart_Firmware.elf.dir/Standard_periphal_library/source/stm32f10x_dac.c.obj"
+},
+{
+  "directory": "D:/SVN/308respository/Source/Quantitative_Cart/Firmware/v2_0/build",
+  "command": "\"D:/download/stm32_vscode_envirorment/10 2021.10/bin/arm-none-eabi-gcc.exe\" -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER @CMakeFiles/Quantitative_Cart_Firmware.elf.dir/includes_C.rsp  -mcpu=cortex-m3 -mthumb -fdata-sections -ffunction-sections -Os -g -g -o CMakeFiles/Quantitative_Cart_Firmware.elf.dir/Standard_periphal_library/source/stm32f10x_dbgmcu.c.obj -c D:/SVN/308respository/Source/Quantitative_Cart/Firmware/v2_0/Standard_periphal_library/source/stm32f10x_dbgmcu.c",
+  "file": "D:/SVN/308respository/Source/Quantitative_Cart/Firmware/v2_0/Standard_periphal_library/source/stm32f10x_dbgmcu.c",
+  "output": "CMakeFiles/Quantitative_Cart_Firmware.elf.dir/Standard_periphal_library/source/stm32f10x_dbgmcu.c.obj"
+},
+{
+  "directory": "D:/SVN/308respository/Source/Quantitative_Cart/Firmware/v2_0/build",
+  "command": "\"D:/download/stm32_vscode_envirorment/10 2021.10/bin/arm-none-eabi-gcc.exe\" -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER @CMakeFiles/Quantitative_Cart_Firmware.elf.dir/includes_C.rsp  -mcpu=cortex-m3 -mthumb -fdata-sections -ffunction-sections -Os -g -g -o CMakeFiles/Quantitative_Cart_Firmware.elf.dir/Standard_periphal_library/source/stm32f10x_dma.c.obj -c D:/SVN/308respository/Source/Quantitative_Cart/Firmware/v2_0/Standard_periphal_library/source/stm32f10x_dma.c",
+  "file": "D:/SVN/308respository/Source/Quantitative_Cart/Firmware/v2_0/Standard_periphal_library/source/stm32f10x_dma.c",
+  "output": "CMakeFiles/Quantitative_Cart_Firmware.elf.dir/Standard_periphal_library/source/stm32f10x_dma.c.obj"
+},
+{
+  "directory": "D:/SVN/308respository/Source/Quantitative_Cart/Firmware/v2_0/build",
+  "command": "\"D:/download/stm32_vscode_envirorment/10 2021.10/bin/arm-none-eabi-gcc.exe\" -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER @CMakeFiles/Quantitative_Cart_Firmware.elf.dir/includes_C.rsp  -mcpu=cortex-m3 -mthumb -fdata-sections -ffunction-sections -Os -g -g -o CMakeFiles/Quantitative_Cart_Firmware.elf.dir/Standard_periphal_library/source/stm32f10x_exti.c.obj -c D:/SVN/308respository/Source/Quantitative_Cart/Firmware/v2_0/Standard_periphal_library/source/stm32f10x_exti.c",
+  "file": "D:/SVN/308respository/Source/Quantitative_Cart/Firmware/v2_0/Standard_periphal_library/source/stm32f10x_exti.c",
+  "output": "CMakeFiles/Quantitative_Cart_Firmware.elf.dir/Standard_periphal_library/source/stm32f10x_exti.c.obj"
+},
+{
+  "directory": "D:/SVN/308respository/Source/Quantitative_Cart/Firmware/v2_0/build",
+  "command": "\"D:/download/stm32_vscode_envirorment/10 2021.10/bin/arm-none-eabi-gcc.exe\" -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER @CMakeFiles/Quantitative_Cart_Firmware.elf.dir/includes_C.rsp  -mcpu=cortex-m3 -mthumb -fdata-sections -ffunction-sections -Os -g -g -o CMakeFiles/Quantitative_Cart_Firmware.elf.dir/Standard_periphal_library/source/stm32f10x_flash.c.obj -c D:/SVN/308respository/Source/Quantitative_Cart/Firmware/v2_0/Standard_periphal_library/source/stm32f10x_flash.c",
+  "file": "D:/SVN/308respository/Source/Quantitative_Cart/Firmware/v2_0/Standard_periphal_library/source/stm32f10x_flash.c",
+  "output": "CMakeFiles/Quantitative_Cart_Firmware.elf.dir/Standard_periphal_library/source/stm32f10x_flash.c.obj"
+},
+{
+  "directory": "D:/SVN/308respository/Source/Quantitative_Cart/Firmware/v2_0/build",
+  "command": "\"D:/download/stm32_vscode_envirorment/10 2021.10/bin/arm-none-eabi-gcc.exe\" -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER @CMakeFiles/Quantitative_Cart_Firmware.elf.dir/includes_C.rsp  -mcpu=cortex-m3 -mthumb -fdata-sections -ffunction-sections -Os -g -g -o CMakeFiles/Quantitative_Cart_Firmware.elf.dir/Standard_periphal_library/source/stm32f10x_fsmc.c.obj -c D:/SVN/308respository/Source/Quantitative_Cart/Firmware/v2_0/Standard_periphal_library/source/stm32f10x_fsmc.c",
+  "file": "D:/SVN/308respository/Source/Quantitative_Cart/Firmware/v2_0/Standard_periphal_library/source/stm32f10x_fsmc.c",
+  "output": "CMakeFiles/Quantitative_Cart_Firmware.elf.dir/Standard_periphal_library/source/stm32f10x_fsmc.c.obj"
+},
+{
+  "directory": "D:/SVN/308respository/Source/Quantitative_Cart/Firmware/v2_0/build",
+  "command": "\"D:/download/stm32_vscode_envirorment/10 2021.10/bin/arm-none-eabi-gcc.exe\" -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER @CMakeFiles/Quantitative_Cart_Firmware.elf.dir/includes_C.rsp  -mcpu=cortex-m3 -mthumb -fdata-sections -ffunction-sections -Os -g -g -o CMakeFiles/Quantitative_Cart_Firmware.elf.dir/Standard_periphal_library/source/stm32f10x_gpio.c.obj -c D:/SVN/308respository/Source/Quantitative_Cart/Firmware/v2_0/Standard_periphal_library/source/stm32f10x_gpio.c",
+  "file": "D:/SVN/308respository/Source/Quantitative_Cart/Firmware/v2_0/Standard_periphal_library/source/stm32f10x_gpio.c",
+  "output": "CMakeFiles/Quantitative_Cart_Firmware.elf.dir/Standard_periphal_library/source/stm32f10x_gpio.c.obj"
+},
+{
+  "directory": "D:/SVN/308respository/Source/Quantitative_Cart/Firmware/v2_0/build",
+  "command": "\"D:/download/stm32_vscode_envirorment/10 2021.10/bin/arm-none-eabi-gcc.exe\" -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER @CMakeFiles/Quantitative_Cart_Firmware.elf.dir/includes_C.rsp  -mcpu=cortex-m3 -mthumb -fdata-sections -ffunction-sections -Os -g -g -o CMakeFiles/Quantitative_Cart_Firmware.elf.dir/Standard_periphal_library/source/stm32f10x_i2c.c.obj -c D:/SVN/308respository/Source/Quantitative_Cart/Firmware/v2_0/Standard_periphal_library/source/stm32f10x_i2c.c",
+  "file": "D:/SVN/308respository/Source/Quantitative_Cart/Firmware/v2_0/Standard_periphal_library/source/stm32f10x_i2c.c",
+  "output": "CMakeFiles/Quantitative_Cart_Firmware.elf.dir/Standard_periphal_library/source/stm32f10x_i2c.c.obj"
+},
+{
+  "directory": "D:/SVN/308respository/Source/Quantitative_Cart/Firmware/v2_0/build",
+  "command": "\"D:/download/stm32_vscode_envirorment/10 2021.10/bin/arm-none-eabi-gcc.exe\" -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER @CMakeFiles/Quantitative_Cart_Firmware.elf.dir/includes_C.rsp  -mcpu=cortex-m3 -mthumb -fdata-sections -ffunction-sections -Os -g -g -o CMakeFiles/Quantitative_Cart_Firmware.elf.dir/Standard_periphal_library/source/stm32f10x_iwdg.c.obj -c D:/SVN/308respository/Source/Quantitative_Cart/Firmware/v2_0/Standard_periphal_library/source/stm32f10x_iwdg.c",
+  "file": "D:/SVN/308respository/Source/Quantitative_Cart/Firmware/v2_0/Standard_periphal_library/source/stm32f10x_iwdg.c",
+  "output": "CMakeFiles/Quantitative_Cart_Firmware.elf.dir/Standard_periphal_library/source/stm32f10x_iwdg.c.obj"
+},
+{
+  "directory": "D:/SVN/308respository/Source/Quantitative_Cart/Firmware/v2_0/build",
+  "command": "\"D:/download/stm32_vscode_envirorment/10 2021.10/bin/arm-none-eabi-gcc.exe\" -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER @CMakeFiles/Quantitative_Cart_Firmware.elf.dir/includes_C.rsp  -mcpu=cortex-m3 -mthumb -fdata-sections -ffunction-sections -Os -g -g -o CMakeFiles/Quantitative_Cart_Firmware.elf.dir/Standard_periphal_library/source/stm32f10x_pwr.c.obj -c D:/SVN/308respository/Source/Quantitative_Cart/Firmware/v2_0/Standard_periphal_library/source/stm32f10x_pwr.c",
+  "file": "D:/SVN/308respository/Source/Quantitative_Cart/Firmware/v2_0/Standard_periphal_library/source/stm32f10x_pwr.c",
+  "output": "CMakeFiles/Quantitative_Cart_Firmware.elf.dir/Standard_periphal_library/source/stm32f10x_pwr.c.obj"
+},
+{
+  "directory": "D:/SVN/308respository/Source/Quantitative_Cart/Firmware/v2_0/build",
+  "command": "\"D:/download/stm32_vscode_envirorment/10 2021.10/bin/arm-none-eabi-gcc.exe\" -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER @CMakeFiles/Quantitative_Cart_Firmware.elf.dir/includes_C.rsp  -mcpu=cortex-m3 -mthumb -fdata-sections -ffunction-sections -Os -g -g -o CMakeFiles/Quantitative_Cart_Firmware.elf.dir/Standard_periphal_library/source/stm32f10x_rcc.c.obj -c D:/SVN/308respository/Source/Quantitative_Cart/Firmware/v2_0/Standard_periphal_library/source/stm32f10x_rcc.c",
+  "file": "D:/SVN/308respository/Source/Quantitative_Cart/Firmware/v2_0/Standard_periphal_library/source/stm32f10x_rcc.c",
+  "output": "CMakeFiles/Quantitative_Cart_Firmware.elf.dir/Standard_periphal_library/source/stm32f10x_rcc.c.obj"
+},
+{
+  "directory": "D:/SVN/308respository/Source/Quantitative_Cart/Firmware/v2_0/build",
+  "command": "\"D:/download/stm32_vscode_envirorment/10 2021.10/bin/arm-none-eabi-gcc.exe\" -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER @CMakeFiles/Quantitative_Cart_Firmware.elf.dir/includes_C.rsp  -mcpu=cortex-m3 -mthumb -fdata-sections -ffunction-sections -Os -g -g -o CMakeFiles/Quantitative_Cart_Firmware.elf.dir/Standard_periphal_library/source/stm32f10x_rtc.c.obj -c D:/SVN/308respository/Source/Quantitative_Cart/Firmware/v2_0/Standard_periphal_library/source/stm32f10x_rtc.c",
+  "file": "D:/SVN/308respository/Source/Quantitative_Cart/Firmware/v2_0/Standard_periphal_library/source/stm32f10x_rtc.c",
+  "output": "CMakeFiles/Quantitative_Cart_Firmware.elf.dir/Standard_periphal_library/source/stm32f10x_rtc.c.obj"
+},
+{
+  "directory": "D:/SVN/308respository/Source/Quantitative_Cart/Firmware/v2_0/build",
+  "command": "\"D:/download/stm32_vscode_envirorment/10 2021.10/bin/arm-none-eabi-gcc.exe\" -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER @CMakeFiles/Quantitative_Cart_Firmware.elf.dir/includes_C.rsp  -mcpu=cortex-m3 -mthumb -fdata-sections -ffunction-sections -Os -g -g -o CMakeFiles/Quantitative_Cart_Firmware.elf.dir/Standard_periphal_library/source/stm32f10x_sdio.c.obj -c D:/SVN/308respository/Source/Quantitative_Cart/Firmware/v2_0/Standard_periphal_library/source/stm32f10x_sdio.c",
+  "file": "D:/SVN/308respository/Source/Quantitative_Cart/Firmware/v2_0/Standard_periphal_library/source/stm32f10x_sdio.c",
+  "output": "CMakeFiles/Quantitative_Cart_Firmware.elf.dir/Standard_periphal_library/source/stm32f10x_sdio.c.obj"
+},
+{
+  "directory": "D:/SVN/308respository/Source/Quantitative_Cart/Firmware/v2_0/build",
+  "command": "\"D:/download/stm32_vscode_envirorment/10 2021.10/bin/arm-none-eabi-gcc.exe\" -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER @CMakeFiles/Quantitative_Cart_Firmware.elf.dir/includes_C.rsp  -mcpu=cortex-m3 -mthumb -fdata-sections -ffunction-sections -Os -g -g -o CMakeFiles/Quantitative_Cart_Firmware.elf.dir/Standard_periphal_library/source/stm32f10x_spi.c.obj -c D:/SVN/308respository/Source/Quantitative_Cart/Firmware/v2_0/Standard_periphal_library/source/stm32f10x_spi.c",
+  "file": "D:/SVN/308respository/Source/Quantitative_Cart/Firmware/v2_0/Standard_periphal_library/source/stm32f10x_spi.c",
+  "output": "CMakeFiles/Quantitative_Cart_Firmware.elf.dir/Standard_periphal_library/source/stm32f10x_spi.c.obj"
+},
+{
+  "directory": "D:/SVN/308respository/Source/Quantitative_Cart/Firmware/v2_0/build",
+  "command": "\"D:/download/stm32_vscode_envirorment/10 2021.10/bin/arm-none-eabi-gcc.exe\" -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER @CMakeFiles/Quantitative_Cart_Firmware.elf.dir/includes_C.rsp  -mcpu=cortex-m3 -mthumb -fdata-sections -ffunction-sections -Os -g -g -o CMakeFiles/Quantitative_Cart_Firmware.elf.dir/Standard_periphal_library/source/stm32f10x_tim.c.obj -c D:/SVN/308respository/Source/Quantitative_Cart/Firmware/v2_0/Standard_periphal_library/source/stm32f10x_tim.c",
+  "file": "D:/SVN/308respository/Source/Quantitative_Cart/Firmware/v2_0/Standard_periphal_library/source/stm32f10x_tim.c",
+  "output": "CMakeFiles/Quantitative_Cart_Firmware.elf.dir/Standard_periphal_library/source/stm32f10x_tim.c.obj"
+},
+{
+  "directory": "D:/SVN/308respository/Source/Quantitative_Cart/Firmware/v2_0/build",
+  "command": "\"D:/download/stm32_vscode_envirorment/10 2021.10/bin/arm-none-eabi-gcc.exe\" -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER @CMakeFiles/Quantitative_Cart_Firmware.elf.dir/includes_C.rsp  -mcpu=cortex-m3 -mthumb -fdata-sections -ffunction-sections -Os -g -g -o CMakeFiles/Quantitative_Cart_Firmware.elf.dir/Standard_periphal_library/source/stm32f10x_usart.c.obj -c D:/SVN/308respository/Source/Quantitative_Cart/Firmware/v2_0/Standard_periphal_library/source/stm32f10x_usart.c",
+  "file": "D:/SVN/308respository/Source/Quantitative_Cart/Firmware/v2_0/Standard_periphal_library/source/stm32f10x_usart.c",
+  "output": "CMakeFiles/Quantitative_Cart_Firmware.elf.dir/Standard_periphal_library/source/stm32f10x_usart.c.obj"
+},
+{
+  "directory": "D:/SVN/308respository/Source/Quantitative_Cart/Firmware/v2_0/build",
+  "command": "\"D:/download/stm32_vscode_envirorment/10 2021.10/bin/arm-none-eabi-gcc.exe\" -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER @CMakeFiles/Quantitative_Cart_Firmware.elf.dir/includes_C.rsp  -mcpu=cortex-m3 -mthumb -fdata-sections -ffunction-sections -Os -g -g -o CMakeFiles/Quantitative_Cart_Firmware.elf.dir/Standard_periphal_library/source/stm32f10x_wwdg.c.obj -c D:/SVN/308respository/Source/Quantitative_Cart/Firmware/v2_0/Standard_periphal_library/source/stm32f10x_wwdg.c",
+  "file": "D:/SVN/308respository/Source/Quantitative_Cart/Firmware/v2_0/Standard_periphal_library/source/stm32f10x_wwdg.c",
+  "output": "CMakeFiles/Quantitative_Cart_Firmware.elf.dir/Standard_periphal_library/source/stm32f10x_wwdg.c.obj"
+},
+{
+  "directory": "D:/SVN/308respository/Source/Quantitative_Cart/Firmware/v2_0/build",
+  "command": "\"D:/download/stm32_vscode_envirorment/10 2021.10/bin/arm-none-eabi-gcc.exe\" -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER @CMakeFiles/Quantitative_Cart_Firmware.elf.dir/includes_C.rsp  -mcpu=cortex-m3 -mthumb -fdata-sections -ffunction-sections -Os -g -g -O2 -o CMakeFiles/Quantitative_Cart_Firmware.elf.dir/Start/core_cm3.c.obj -c D:/SVN/308respository/Source/Quantitative_Cart/Firmware/v2_0/Start/core_cm3.c",
+  "file": "D:/SVN/308respository/Source/Quantitative_Cart/Firmware/v2_0/Start/core_cm3.c",
+  "output": "CMakeFiles/Quantitative_Cart_Firmware.elf.dir/Start/core_cm3.c.obj"
+},
+{
+  "directory": "D:/SVN/308respository/Source/Quantitative_Cart/Firmware/v2_0/build",
+  "command": "\"D:/download/stm32_vscode_envirorment/10 2021.10/bin/arm-none-eabi-gcc.exe\" -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER @CMakeFiles/Quantitative_Cart_Firmware.elf.dir/includes_C.rsp  -mcpu=cortex-m3 -mthumb -fdata-sections -ffunction-sections -Os -g -g -o CMakeFiles/Quantitative_Cart_Firmware.elf.dir/System/IT_control.c.obj -c D:/SVN/308respository/Source/Quantitative_Cart/Firmware/v2_0/System/IT_control.c",
+  "file": "D:/SVN/308respository/Source/Quantitative_Cart/Firmware/v2_0/System/IT_control.c",
+  "output": "CMakeFiles/Quantitative_Cart_Firmware.elf.dir/System/IT_control.c.obj"
+},
+{
+  "directory": "D:/SVN/308respository/Source/Quantitative_Cart/Firmware/v2_0/build",
+  "command": "\"D:/download/stm32_vscode_envirorment/10 2021.10/bin/arm-none-eabi-gcc.exe\" -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER @CMakeFiles/Quantitative_Cart_Firmware.elf.dir/includes_C.rsp  -mcpu=cortex-m3 -mthumb -fdata-sections -ffunction-sections -Os -g -g -o CMakeFiles/Quantitative_Cart_Firmware.elf.dir/System/public.c.obj -c D:/SVN/308respository/Source/Quantitative_Cart/Firmware/v2_0/System/public.c",
+  "file": "D:/SVN/308respository/Source/Quantitative_Cart/Firmware/v2_0/System/public.c",
+  "output": "CMakeFiles/Quantitative_Cart_Firmware.elf.dir/System/public.c.obj"
+},
+{
+  "directory": "D:/SVN/308respository/Source/Quantitative_Cart/Firmware/v2_0/build",
+  "command": "\"D:/download/stm32_vscode_envirorment/10 2021.10/bin/arm-none-eabi-gcc.exe\" -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER @CMakeFiles/Quantitative_Cart_Firmware.elf.dir/includes_C.rsp  -mcpu=cortex-m3 -mthumb -fdata-sections -ffunction-sections -Os -g -g -o CMakeFiles/Quantitative_Cart_Firmware.elf.dir/System/system_clock.c.obj -c D:/SVN/308respository/Source/Quantitative_Cart/Firmware/v2_0/System/system_clock.c",
+  "file": "D:/SVN/308respository/Source/Quantitative_Cart/Firmware/v2_0/System/system_clock.c",
+  "output": "CMakeFiles/Quantitative_Cart_Firmware.elf.dir/System/system_clock.c.obj"
+},
+{
+  "directory": "D:/SVN/308respository/Source/Quantitative_Cart/Firmware/v2_0/build",
+  "command": "\"D:/download/stm32_vscode_envirorment/10 2021.10/bin/arm-none-eabi-gcc.exe\" -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER @CMakeFiles/Quantitative_Cart_Firmware.elf.dir/includes_C.rsp  -mcpu=cortex-m3 -mthumb -fdata-sections -ffunction-sections -Os -g -g -o CMakeFiles/Quantitative_Cart_Firmware.elf.dir/System/system_config.c.obj -c D:/SVN/308respository/Source/Quantitative_Cart/Firmware/v2_0/System/system_config.c",
+  "file": "D:/SVN/308respository/Source/Quantitative_Cart/Firmware/v2_0/System/system_config.c",
+  "output": "CMakeFiles/Quantitative_Cart_Firmware.elf.dir/System/system_config.c.obj"
+},
+{
+  "directory": "D:/SVN/308respository/Source/Quantitative_Cart/Firmware/v2_0/build",
+  "command": "\"D:/download/stm32_vscode_envirorment/10 2021.10/bin/arm-none-eabi-gcc.exe\" -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER @CMakeFiles/Quantitative_Cart_Firmware.elf.dir/includes_C.rsp  -mcpu=cortex-m3 -mthumb -fdata-sections -ffunction-sections -Os -g -g -o CMakeFiles/Quantitative_Cart_Firmware.elf.dir/User/main.c.obj -c D:/SVN/308respository/Source/Quantitative_Cart/Firmware/v2_0/User/main.c",
+  "file": "D:/SVN/308respository/Source/Quantitative_Cart/Firmware/v2_0/User/main.c",
+  "output": "CMakeFiles/Quantitative_Cart_Firmware.elf.dir/User/main.c.obj"
+},
+{
+  "directory": "D:/SVN/308respository/Source/Quantitative_Cart/Firmware/v2_0/build",
+  "command": "\"D:/download/stm32_vscode_envirorment/10 2021.10/bin/arm-none-eabi-gcc.exe\" -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER @CMakeFiles/Quantitative_Cart_Firmware.elf.dir/includes_C.rsp  -mcpu=cortex-m3 -mthumb -fdata-sections -ffunction-sections -Os -g -g -o CMakeFiles/Quantitative_Cart_Firmware.elf.dir/User/stm32f10x_it.c.obj -c D:/SVN/308respository/Source/Quantitative_Cart/Firmware/v2_0/User/stm32f10x_it.c",
+  "file": "D:/SVN/308respository/Source/Quantitative_Cart/Firmware/v2_0/User/stm32f10x_it.c",
+  "output": "CMakeFiles/Quantitative_Cart_Firmware.elf.dir/User/stm32f10x_it.c.obj"
+},
+{
+  "directory": "D:/SVN/308respository/Source/Quantitative_Cart/Firmware/v2_0/build",
+  "command": "\"D:/download/stm32_vscode_envirorment/10 2021.10/bin/arm-none-eabi-gcc.exe\" -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER @CMakeFiles/Quantitative_Cart_Firmware.elf.dir/includes_C.rsp  -mcpu=cortex-m3 -mthumb -fdata-sections -ffunction-sections -Os -g -g -o CMakeFiles/Quantitative_Cart_Firmware.elf.dir/User/system_stm32f10x.c.obj -c D:/SVN/308respository/Source/Quantitative_Cart/Firmware/v2_0/User/system_stm32f10x.c",
+  "file": "D:/SVN/308respository/Source/Quantitative_Cart/Firmware/v2_0/User/system_stm32f10x.c",
+  "output": "CMakeFiles/Quantitative_Cart_Firmware.elf.dir/User/system_stm32f10x.c.obj"
+},
+{
+  "directory": "D:/SVN/308respository/Source/Quantitative_Cart/Firmware/v2_0/build",
+  "command": "\"D:/download/stm32_vscode_envirorment/10 2021.10/bin/arm-none-eabi-gcc.exe\" -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER @CMakeFiles/Quantitative_Cart_Firmware.elf.dir/includes_C.rsp  -mcpu=cortex-m3 -mthumb -fdata-sections -ffunction-sections -Os -g -g -o CMakeFiles/Quantitative_Cart_Firmware.elf.dir/CMakeFiles/4.1.1/CompilerIdC/CMakeCCompilerId.c.obj -c D:/SVN/308respository/Source/Quantitative_Cart/Firmware/v2_0/build/CMakeFiles/4.1.1/CompilerIdC/CMakeCCompilerId.c",
+  "file": "D:/SVN/308respository/Source/Quantitative_Cart/Firmware/v2_0/build/CMakeFiles/4.1.1/CompilerIdC/CMakeCCompilerId.c",
+  "output": "CMakeFiles/Quantitative_Cart_Firmware.elf.dir/CMakeFiles/4.1.1/CompilerIdC/CMakeCCompilerId.c.obj"
+},
+{
+  "directory": "D:/SVN/308respository/Source/Quantitative_Cart/Firmware/v2_0/build",
+  "command": "\"D:/download/stm32_vscode_envirorment/10 2021.10/bin/arm-none-eabi-gcc.exe\" -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER @CMakeFiles/Quantitative_Cart_Firmware.elf.dir/includes_C.rsp  -mcpu=cortex-m3 -mthumb -fdata-sections -ffunction-sections -Os -g -g -o CMakeFiles/Quantitative_Cart_Firmware.elf.dir/core_periphal/misc.c.obj -c D:/SVN/308respository/Source/Quantitative_Cart/Firmware/v2_0/core_periphal/misc.c",
+  "file": "D:/SVN/308respository/Source/Quantitative_Cart/Firmware/v2_0/core_periphal/misc.c",
+  "output": "CMakeFiles/Quantitative_Cart_Firmware.elf.dir/core_periphal/misc.c.obj"
+},
+{
+  "directory": "D:/SVN/308respository/Source/Quantitative_Cart/Firmware/v2_0/build",
+  "command": "\"D:/download/stm32_vscode_envirorment/10 2021.10/bin/arm-none-eabi-gcc.exe\" -DSTM32F10X_MD -DUSE_STDPERIPH_DRIVER @CMakeFiles/Quantitative_Cart_Firmware.elf.dir/includes_ASM.rsp  -mcpu=cortex-m3 -mthumb -fdata-sections -ffunction-sections -g -o CMakeFiles/Quantitative_Cart_Firmware.elf.dir/Start/startup_stm32f10x_md.s.obj -c D:/SVN/308respository/Source/Quantitative_Cart/Firmware/v2_0/Start/startup_stm32f10x_md.s",
+  "file": "D:/SVN/308respository/Source/Quantitative_Cart/Firmware/v2_0/Start/startup_stm32f10x_md.s",
+  "output": "CMakeFiles/Quantitative_Cart_Firmware.elf.dir/Start/startup_stm32f10x_md.s.obj"
+}
+]

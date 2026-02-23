@@ -1,0 +1,259 @@
+version: "4.1"
+name: project
+type: ARM
+deviceName: null
+packDir: null
+srcDirs: []
+virtualFolder:
+  name: <virtual_root>
+  files: []
+  folders:
+    - name: core_periphal
+      files:
+        - path: ../core_periphal/misc.c
+        - path: ../core_periphal/misc.h
+      folders: []
+    - name: Hardware_driver
+      files:
+        - path: ../Hardware_driver/motor.h
+        - path: ../Hardware_driver/motor.c
+        - path: ../Hardware_driver/OLED.c
+        - path: ../Hardware_driver/OLED.h
+        - path: ../Hardware_driver/OLED_Font.h
+        - path: ../Hardware_driver/gps.c
+        - path: ../Hardware_driver/gps.h
+      folders: []
+    - name: Software_package
+      files:
+        - path: ../Software_package/delay.c
+        - path: ../Software_package/delay.h
+        - path: ../Software_package/communication.c
+        - path: ../Software_package/communication.h
+        - path: ../Software_package/pid.c
+        - path: ../Software_package/pid.h
+        - path: ../Software_package/Navigation.c
+        - path: ../Software_package/Navigation.h
+      folders: []
+    - name: System
+      files:
+        - path: ../System/system_config.c
+        - path: ../System/system_config.h
+        - path: ../System/public.c
+        - path: ../System/public.h
+        - path: ../System/system_clock.c
+        - path: ../System/system_clock.h
+        - path: ../System/IT_control.c
+        - path: ../System/IT_control.h
+      folders: []
+    - name: Start
+      files:
+        - path: ../Start/core_cm3.c
+        - path: ../Start/core_cm3.h
+        - path: ../Start/startup_stm32f10x_md.s
+      folders: []
+    - name: User
+      files:
+        - path: ../User/main.c
+        - path: ../User/stm32f10x.h
+        - path: ../User/stm32f10x_conf.h
+        - path: ../User/stm32f10x_it.c
+        - path: ../User/stm32f10x_it.h
+        - path: ../User/system_stm32f10x.c
+        - path: ../User/system_stm32f10x.h
+      folders: []
+    - name: Standard_periphal_library
+      files:
+        - path: ../Standard_periphal_library/include/stm32f10x_adc.h
+        - path: ../Standard_periphal_library/include/stm32f10x_bkp.h
+        - path: ../Standard_periphal_library/include/stm32f10x_can.h
+        - path: ../Standard_periphal_library/include/stm32f10x_cec.h
+        - path: ../Standard_periphal_library/include/stm32f10x_crc.h
+        - path: ../Standard_periphal_library/include/stm32f10x_dac.h
+        - path: ../Standard_periphal_library/include/stm32f10x_dbgmcu.h
+        - path: ../Standard_periphal_library/include/stm32f10x_dma.h
+        - path: ../Standard_periphal_library/include/stm32f10x_exti.h
+        - path: ../Standard_periphal_library/include/stm32f10x_flash.h
+        - path: ../Standard_periphal_library/include/stm32f10x_fsmc.h
+        - path: ../Standard_periphal_library/include/stm32f10x_gpio.h
+        - path: ../Standard_periphal_library/include/stm32f10x_i2c.h
+        - path: ../Standard_periphal_library/include/stm32f10x_iwdg.h
+        - path: ../Standard_periphal_library/include/stm32f10x_pwr.h
+        - path: ../Standard_periphal_library/include/stm32f10x_rcc.h
+        - path: ../Standard_periphal_library/include/stm32f10x_rtc.h
+        - path: ../Standard_periphal_library/include/stm32f10x_sdio.h
+        - path: ../Standard_periphal_library/include/stm32f10x_spi.h
+        - path: ../Standard_periphal_library/include/stm32f10x_tim.h
+        - path: ../Standard_periphal_library/include/stm32f10x_usart.h
+        - path: ../Standard_periphal_library/include/stm32f10x_wwdg.h
+        - path: ../Standard_periphal_library/source/stm32f10x_adc.c
+        - path: ../Standard_periphal_library/source/stm32f10x_bkp.c
+        - path: ../Standard_periphal_library/source/stm32f10x_can.c
+        - path: ../Standard_periphal_library/source/stm32f10x_cec.c
+        - path: ../Standard_periphal_library/source/stm32f10x_crc.c
+        - path: ../Standard_periphal_library/source/stm32f10x_dac.c
+        - path: ../Standard_periphal_library/source/stm32f10x_dbgmcu.c
+        - path: ../Standard_periphal_library/source/stm32f10x_dma.c
+        - path: ../Standard_periphal_library/source/stm32f10x_exti.c
+        - path: ../Standard_periphal_library/source/stm32f10x_flash.c
+        - path: ../Standard_periphal_library/source/stm32f10x_fsmc.c
+        - path: ../Standard_periphal_library/source/stm32f10x_gpio.c
+        - path: ../Standard_periphal_library/source/stm32f10x_i2c.c
+        - path: ../Standard_periphal_library/source/stm32f10x_iwdg.c
+        - path: ../Standard_periphal_library/source/stm32f10x_pwr.c
+        - path: ../Standard_periphal_library/source/stm32f10x_rcc.c
+        - path: ../Standard_periphal_library/source/stm32f10x_rtc.c
+        - path: ../Standard_periphal_library/source/stm32f10x_sdio.c
+        - path: ../Standard_periphal_library/source/stm32f10x_spi.c
+        - path: ../Standard_periphal_library/source/stm32f10x_tim.c
+        - path: ../Standard_periphal_library/source/stm32f10x_usart.c
+        - path: ../Standard_periphal_library/source/stm32f10x_wwdg.c
+      folders: []
+dependenceList: []
+outDir: build
+miscInfo:
+  uid: 8672d158a7ebc2d0da810becd03daf17
+targets:
+  usart_test1:
+    cppPreprocessAttrs:
+      defineList:
+        - USE_STDPERIPH_DRIVER
+        - STM32F10X_MD
+      incList:
+        - ../User
+        - ../Start
+        - ../core_periphal
+        - ../Software_package
+        - ../Standard_periphal_library/include
+        - ../Standard_periphal_library/source
+        - ../Hardware_driver
+        - ../System
+        - .cmsis/include
+        - RTE/_usart_test1
+      libList: []
+    excludeList: []
+    toolchain: AC5
+    toolchainConfigMap:
+      AC5:
+        archExtensions: ""
+        cpuType: Cortex-M3
+        floatingPointHardware: none
+        options:
+          version: 4
+          afterBuildTasks: []
+          asm-compiler: {}
+          beforeBuildTasks: []
+          c/cpp-compiler:
+            CXX_FLAGS: --diag_suppress=1 --diag_suppress=1295
+            C_FLAGS: --diag_suppress=1 --diag_suppress=1295
+            c99-mode: true
+            gnu-extensions: true
+            one-elf-section-per-function: true
+            optimization: level-0
+            warnings: all-warnings
+          global:
+            output-debug-info: enable
+            use-microLIB: true
+          linker:
+            $disableOutputTask: true
+            $outputTaskExcludes:
+              - .bin
+            output-format: elf
+            ro-base: "0x08000000"
+            rw-base: "0x20000000"
+            xo-base: ""
+        scatterFilePath: ""
+        storageLayout:
+          RAM:
+            - id: 1
+              isChecked: false
+              mem:
+                size: "0x0"
+                startAddr: "0x0"
+              noInit: false
+              tag: RAM
+            - id: 2
+              isChecked: false
+              mem:
+                size: "0x0"
+                startAddr: "0x0"
+              noInit: false
+              tag: RAM
+            - id: 3
+              isChecked: false
+              mem:
+                size: "0x0"
+                startAddr: "0x0"
+              noInit: false
+              tag: RAM
+            - id: 1
+              isChecked: true
+              mem:
+                size: "0x5000"
+                startAddr: "0x20000000"
+              noInit: false
+              tag: IRAM
+            - id: 2
+              isChecked: false
+              mem:
+                size: "0x0"
+                startAddr: "0x0"
+              noInit: false
+              tag: IRAM
+          ROM:
+            - id: 1
+              isChecked: false
+              isStartup: false
+              mem:
+                size: "0x0"
+                startAddr: "0x0"
+              tag: ROM
+            - id: 2
+              isChecked: false
+              isStartup: false
+              mem:
+                size: "0x0"
+                startAddr: "0x0"
+              tag: ROM
+            - id: 3
+              isChecked: false
+              isStartup: false
+              mem:
+                size: "0x0"
+                startAddr: "0x0"
+              tag: ROM
+            - id: 1
+              isChecked: true
+              isStartup: true
+              mem:
+                size: "0x10000"
+                startAddr: "0x8000000"
+              tag: IROM
+            - id: 2
+              isChecked: false
+              isStartup: false
+              mem:
+                size: "0x0"
+                startAddr: "0x0"
+              tag: IROM
+        useCustomScatterFile: false
+    uploadConfigMap:
+      JLink:
+        baseAddr: ""
+        bin: ""
+        cpuInfo:
+          cpuName: "null"
+          vendor: "null"
+        otherCmds: ""
+        proType: 1
+        speed: 8000
+      STLink:
+        address: "0x8000000"
+        bin: ""
+        elFile: build/project.axf
+        optionBytes: .eide/usart_test1.st.option.bytes.ini
+        otherCmds: ""
+        proType: SWD
+        resetMode: default
+        runAfterProgram: true
+        speed: 4000
+    uploader: STLink
