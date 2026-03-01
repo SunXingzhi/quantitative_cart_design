@@ -1,0 +1,2 @@
+# 忽略 __PYCACHE__ 缓存文件夹 
+__pycache__/

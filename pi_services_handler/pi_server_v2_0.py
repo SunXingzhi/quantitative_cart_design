@@ -15,14 +15,14 @@ from car_motion_handler import car_status
 print(''' \033[36m					
 ░████  ░████████████████████████████████████  ░████	 ░████
  ░██  ░██				 ░██   ░██	   
-  ░██░██  ░██   ░█████     ░██████      ░██    ░████████  ░██
-   ░███   ░██ ░██    ░██ ░██    ░██    ░███    ░██    ░██ ░██
-  ░██░██  ░██ ░██    ░██ ░██    ░██   ░██      ░██    ░██ ░██
- ░██  ░██ ░██ ░██    ░██ ░██   ░███  ░██       ░██    ░██ ░██
+  ░██░██  ░██   ░█████	 ░██████	  ░██	░████████  ░██
+   ░███   ░██ ░██	░██ ░██	░██	░███	░██	░██ ░██
+  ░██░██  ░██ ░██	░██ ░██	░██   ░██	  ░██	░██ ░██
+ ░██  ░██ ░██ ░██	░██ ░██   ░███  ░██	   ░██	░██ ░██
 ░████  ░█████████   ░████  ░████░██ ░██████████████   ░███████
-				░██	       ░██	  
-  ░███████████████████████████████	     ░██████	   
-\033[0m							     
+				░██		   ░██	  
+  ░███████████████████████████████		 ░██████	   
+\033[0m								 
 ''')
 
 # ======================网络socket创建及多线程===================
@@ -44,12 +44,12 @@ GUI_communication_thread	= threading.Thread(
 	)
 GUI_send_thread			= threading.Thread(target=thread_handler.socket_send_thread,	 name="socket_sender")
 GUI_receive_thread		= threading.Thread(target=thread_handler.socket_receive_thread, name="socket_receiver")
-QMC5883P_thread			= threading.Thread(target=thread_handler.QMC5883P_get_angle_thread, name="QMC5883P")
+# QMC5883P_thread			= threading.Thread(target=thread_handler.QMC5883P_get_angle_thread, name="QMC5883P")
 # 默认启动线程（保持顺序无关）
 GUI_communication_thread.start()
 GUI_receive_thread.start()
 GUI_send_thread.start()
-QMC5883P_thread.start()
+# QMC5883P_thread.start()
 
 # ======================= 主程序 =======================
 if __name__ == "__main__":
@@ -73,13 +73,13 @@ if __name__ == "__main__":
 	# 开启与MCU的串口通信线程（读数据）
 	pi_receive_MCU_thread	= threading.Thread(target=thread_handler.pi_mcu_communication_thread, args=(zero2w,), name="pi_mcu_communicator")
 	pi_receive_MCU_thread.start()
-    print("[√] pi received_data thread open successfully\n")
-    # 开启MCU数据解析线程
-    pi_pasrsing_MCU_thread  = threading.Thread(target=thread_handler.parse_mcu_data_thread, args=(zero2w,), name="pi_MCU_data_parser")
-    pi_pasrsing_MCU_thread.start()
-    print("[√] pi parsing_data thread open successfully\n")
+	print("[√] pi received_data thread open successfully\n")
+	# 开启MCU数据解析线程
+	pi_pasrsing_MCU_thread  = threading.Thread(target=thread_handler.parse_mcu_data_thread, args=(zero2w,), name="pi_MCU_data_parser")
+	pi_pasrsing_MCU_thread.start()
+	print("[√] pi parsing_data thread open successfully\n")
 
-    # 打开手柄设备
+	# 打开手柄设备
 	device_path = pi_config.DEVICE_PATH  # 转为 bytes
 	fd = joystick_handler.xbox_open(device_path)
 
@@ -107,21 +107,24 @@ if __name__ == "__main__":
 				print(f"[←] Received: {thread_handler.received_data.strip()}")
 				query_type	= data_handler.parse_client_command(thread_handler.received_data)
 				if query_type == "points":
-					coordinates_list	= (thread_handler.received_data[:-1]).split('/')
+					# TODO 需要变成浮点数列表
+					# 是否需要加入错误处理?
+					coordinates_list	= list(map(float, (thread_handler.received_data[:-1]).split('/')))
 					coordinates_number	= len(coordinates_list)-1
 					print(f"coordinates_number length:{coordinates_number}")
 					if coordinates_number%2 != 0 or (coordinates_number/2)>10:
 						print("[×] Invalid coordinates number")
 						coordinates_list	= []	# clean the list
-					points_number	= len(coordinates_list)/2
-					# 还需要清理点	
+						points_number	= len(coordinates_list)/2
+						# 还需要清理点	
 				if query_type == "Nstart":
 					# 检查当前系统是否有坐标点
 					if points_number == 0:
 						print("[×] Invalid coordinates number")
 					# 开启导航线程
-					navigation_single_thread	= threading.Thread(target=thread_handler.navigation_thread, args=(zero2w, coordinates_list, points_number), name="nevigation_thread_handler")
-					navigation_single_thread.start()
+				else:
+						navigation_single_thread	= threading.Thread(target=thread_handler.navigation_thread, args=(zero2w, coordinates_list, points_number), name="nevigation_thread_handler")
+						navigation_single_thread.start()
 				if query_type == "Pget":	# Client->GUI:当前小车位置请求
 					#print("13424")
 					continue	
@@ -145,7 +148,8 @@ if __name__ == "__main__":
 			#print(f"lt:{joystick_data.lt},rt:{joystick_data.rt}")
 			# 解析电机速度
 			motors_speed = car_motion_handler.parsed_motors_speed(joystick_data['v_cx'], joystick_data['omega'])
-			# 解析舵机角度i
+			# 解析舵机角度
+            
 			motors_angle = car_motion_handler.parsed_motors_angle(joystick_data['lt'], joystick_data['rt'])
 			# print(f"\t\t\t\t\t\lx:{joystick_data['lx']}", end='\r')
 			# 构造串口协议字符串
@@ -168,7 +172,7 @@ if __name__ == "__main__":
 				print(f"send {usart_close_brake_cmd}")
 			if send_counter == 4:
 				zero2w.serial_write(usart_motor_cmd.encode("utf-8"))	
-				print(f"\t\t\t\tmotor:{usart_motor_cmd},servo:{usart_servo_cmd}", end='\r')	# debug
+				print(f"\t\t\t\t\t\tmotor:{usart_motor_cmd},servo:{usart_servo_cmd}", end='\r')	# debug
 			if send_counter == 5:
 				zero2w.serial_write(usart_servo_cmd.encode("utf-8"))	
 				send_counter	= 0

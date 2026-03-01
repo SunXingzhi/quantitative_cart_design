@@ -1,6 +1,8 @@
 # 小车处理部分
 from enum import Enum
 import	pi_config
+import  math
+
 # ======================= 小车状态枚举 =======================
 class car_status(Enum):
 	EXCEPCTION_ERROR_STATUS = -1	# 异常状态
@@ -195,7 +197,34 @@ def parsed_motors_angle(pos1,pos2):
 		'angle_Y':angle_y
 	}
 
+# 计算 两个经纬度坐标之间的距离(单位: m)
+# 参数为float data type
+def haversine_distance(a_latitude, a_longitude,  b_latitude, b_longitude):
+    # 将坐标转换为弧度
+    lat1 = math.radians(a_latitude)
+    lon1 = math.radians(a_longitude)
+    lat2 = math.radians(b_latitude)
+    lon2 = math.radians(b_longitude)
 
+    # 计算纬度和经度的差异
+    dlat = lat2 - lat1
+    dlon = lon2 - lon1
 
+    # 应用Haversine公式
+    a = math.sin(dlat / 2) ** 2 + math.cos(lat1) * math.cos(lat2) * math.sin(dlon / 2) ** 2
+    c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
+
+    # 计算两个坐标间的距离(km->m)
+    distance = 6371.0 * c * 1000
+
+    return distance
+
+# 根据距离确定小车的运行速度和时间
+def calculate_cart_motion_information(distance):
+    
+
+    motion_time = distance/pi_config.CAR_SPEED_MAX
+     
+    
 
 

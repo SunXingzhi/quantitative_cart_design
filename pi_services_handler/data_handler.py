@@ -1,6 +1,6 @@
 import	pi_config
 from	enum import Enum
-
+import  math
 	
 # 状态存放区
 
@@ -52,7 +52,7 @@ def parse_mcu_response(response_string):
 	if len(response_string)==0 or response_string==None:
 		print(f"{MCU_error_message_header}empty string")
 		return None
-	response_header    = response_string[1]
+    response_header	= response_string[1]
 	
 	end_char	= response_string[-2]
 	if end_char!='*':
@@ -63,17 +63,20 @@ def parse_mcu_response(response_string):
 	response_string = response_string[:-1]
 	match response_header:
 		case 'n':
-            return response_string
+			return response_string
 		case 'g':	# 小车当前定位数据(#g/latitude/longitude*)
 			# 提取经纬度信息
 			latitude	= response_string.split('/')[1]
 			longitude	= response_string.split('/')[-1]
 			
-			return	{
-					'latitude': f"{latitude}",
-					'longitude':    f"{longitude}"
-				}	
+			return {
+				'latitude':	f"{latitude}",
+				'longitude':	f"{longitude}"
+			}	
 
+# 构造串口命令函数
+def generate_serial_cmd(header, cmd):
+    return header+cmd+"*"
 
 from math import sin, cos, atan2
 def calculate_heading_angle(a_latitude, a_longitude, b_latitude, b_longitude):
@@ -89,11 +92,15 @@ def calculate_heading_angle(a_latitude, a_longitude, b_latitude, b_longitude):
 	y	= cos(a_latitude_radian)*sin(b_latitude_radian)-sin(a_latitude_radian)*cos(b_latitude_radian)*cos(longitude_radian_difference)
 
 	heading_degree	= atan2(x, y)*180.0/pi_config.PI
-
+	
+	'''
 	if heading_degree<0:
 		heading_degree	= heading_degree+360
+	'''
 	return heading_degree
 
+def calculate_revolve_data_from_heading_angle(heading_degree):
+	return
 	
 
 # 处理请求函数

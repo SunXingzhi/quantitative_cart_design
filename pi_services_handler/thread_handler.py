@@ -8,6 +8,7 @@ import	pi_config
 from	QMC5883P_get_angle import QMC5883P
 import	timeout_decorator
 import  sys
+import car_motion_handler
 
 #import	data_handler
 
@@ -185,7 +186,7 @@ def QMC5883P_get_angle_thread():
 				# what is need to be noticed is heading's valiable type
 				qmc5883p_data.put_data(heading)					
 				# 设置接收状态
-				qmc5883p_status	= 1
+				qmc5883p_status = 1
 				#print(f"x:{x_guass},y:{y_gauss},z:{z_gauss}",end='\r')
 				print(f"x:{x_raw},y:{y_raw},z:{z_raw}, 航向:{heading:6.1f}", end='\r')
 				time.sleep(0.5)
@@ -227,8 +228,8 @@ class communicator(raspberry):
 			print("[x] Query information valiable must be 'String' type")
 		
 '''
-
-navigation_data_parsing_status    = 0
+navigation_data_parsing_status  = 0
+gps_data_status				 = 0 # 0->数据没有准备好, 1->准备好了经纬度数据, data type: dictionary
 received_serial_status	= 0
 # [debug] 树莓派和MCU通信线程
 # 主要作用是将数据放入待处理数据队列中, 以供解析线程进行解析
@@ -240,39 +241,42 @@ def pi_mcu_communication_thread(raspberry_serial):
 	# 轮询获取串口缓冲区数据
 	while True:
 		# method readline will wait until serial buffer read the '\n'.
-        # So the command must include '\n' in the mcu program.
+		# So the command must include '\n' in the mcu program.
 		received_data	= raspberry_serial.serial_readline()
 		if received_data != None:
 			# 置位接收状态
-            #received_serial_status  = 1
-            #mcu_serial_received_data.put_data(received_data)
-            mcu_response_data_with_parsing.put_data(received_data)
+			#received_serial_status  = 1
+			#mcu_serial_received_data.put_data(received_data)
+			mcu_response_data_with_parsing.put_data(received_data)
 		else:
-            #received_serial_status  = 0
-            pass
+			#received_serial_status  = 0
+			pass
 
 # 解析mcu数据线程(主程序中还没开启)
 def parse_mcu_data_thread(raspberry_serial):
-    global  navigation_data_parsing_status
-    while True:
-        parsing_data    = mcu_response_data_with_parsing.get_latest_data()
-        if parsing_data!=None:
+	global  navigation_data_parsing_status
+	while True:
+		parsing_data	= mcu_response_data_with_parsing.get_latest_data()
+		if parsing_data!=None:
 
-            parsing_data    = data_handler.parse_mcu_response(parsing_data)
-            if isinstance(parsing_data, dict) == True:
-                mcu_GPS_data.put_data(parsing_data)
-                # TODO:后续进行读取逻辑,可使用状态机
-            elif isinstance(parsing_data, str) == True:
-                # 导航数据解析完毕,状态置1, Nooooote:使用后需要置0
-                navigation_data_parsing_status  = 1
-                mcu_navigation_response_data.put_data(parsing_data)
+			parsing_data	= data_handler.parse_mcu_response(parsing_data)
+			if isinstance(parsing_data, dict) == True:
+				mcu_GPS_data.put_data(parsing_data)
+				# TODO:后续进行读取逻辑,可使用状态机
+				gps_data_status = 1
+				print(f"gps_data:{parsing_data['latitude']}")
+			elif isinstance(parsing_data, str) == True:
+				# 导航数据解析完毕,状态置1, Nooooote:使用后需要置0
+				navigation_data_parsing_status  = 1
+				mcu_navigation_response_data.put_data(parsing_data)
 # =========================== 导航部分 =========================
 # 请求
-QUERY_navigation_START		= "@n/A*"
-QUERY_navigation_STOP		= "@n/Z*"
-QUERY_navigation_POSITION	= "@n/G*"
-QUERY_navigation_MOVING_HEADER	= "@n/T*"
 
+QUERY_NAVIGATION_START		    = "@n/A*"
+QUERY_NAVIGATION_STOP		    = "@n/Z*"
+#QUERY_NAVIGATION_POSITION	    = "@n/G*"   # 已废弃
+QUERY_NAVIGATION_MOVING_HEADER	= "@n/T"
+QUERY_NAVIGATION_TURN_HEADER    = "@n/R"
 
 # [debug]使用超时判断响应是否成功接收
 # 由于多线程场景，超时解释器不适用signals信号(signals信号为LinuxAPI)
@@ -280,8 +284,8 @@ QUERY_navigation_MOVING_HEADER	= "@n/T*"
 @timeout_decorator.timeout(3, use_signals=False)
 def is_valid_response(target_response_header):
 	# response_status	= 0
-    # global received_serial_status
-    global navigation_data_parsing_status
+	# global received_serial_status
+	global navigation_data_parsing_status
 	while True:
 		# received_serial_status 为共享全局变量
 		if navigation_data_parsing_status == 1:
@@ -289,31 +293,56 @@ def is_valid_response(target_response_header):
 			if response_information[3] != target_response_header:	
 				print("[x] Invalid mcu response")
 				#thread_stop_status	= 1
-				response_information    = None
-                return True
-            navigation_data_parsing_status  = 0
-
-            
+				response_information	= None
+				return True
+			navigation_data_parsing_status  = 0
+	
 def timeout_is_valid_response(target_response_header):
 	try:
 		return is_valid_response(target_response_header)
 	except timeout_decorator.TimeoutError:
 		return False
 
+@timeout_decorator.timeout(3, use_signals=False)
+def is_valid_gps_data():
+	global gps_data_status
+
+	while True:
+		if gps_data_status == 1:
+			navigation_information  = mcu_GPS_data.get_latest_data()
+			# current_latitude	= navigation_information['latitude']
+			# current_longitude   = navigation_information['longitude']
+			
+			gps_data_status = 0
+				
+			break
+	return navigation_information
+
+
+def timeout_is_valid_gps_data():
+	try:
+		return is_valid_gps_data()
+	except timeout_decorator.TimeoutError:
+		return None
+
 # get the heading degree between A and B
+
+
 
 # the argument is the type "list<float>"，which is mean that points list
 # It still needs to send logs to the client
+# Nooooote: navigatiion thread must start after QMC5883P has already be created.
 def navigation_thread(raspberry_serial, coordinates_list, points_number):
 	# global	heading, direction	# QMC5883P 测量的航向角
 	global		received_serial_status
-	
+	global	  gps_data_status
+
 	remaining_path_points	= points_number
 	thread_stop_status	= 0
 	response_data		= ""
 		
 	# Send the navigation start query -> MCU
-	raspberry_serial.serial_write(QUERY_navigation_START.encode("utf-8"))
+	raspberry_serial.serial_write(QUERY_NAVIGATION_START.encode("utf-8"))
 	# Nooooote: 这里需要根据是否超时来判断数据，因此获取数据是在超时函数中
 	# response_data	= mcu_serial_received_data.get_latest_data
 	if timeout_is_valid_response('0') == False:
@@ -322,40 +351,108 @@ def navigation_thread(raspberry_serial, coordinates_list, points_number):
 		return	
 	while remaining_path_points != 0:
 		# Send the navigation position query -> MCU
-		raspberry_serial.serial_write(QUERY_navigation_POSITION.encode("utf-8"))
+		raspberry_serial.serial_write(QUERY_NAVIGATION_POSITION.encode("utf-8"))
 		# response_data	= mcu_serial_received_data.get_latest_data
-        # TODO 需要更改逻辑:新版本的位置请求是一直发送的.因此只需要通过接收定位线程获取数据即可
-
+		# TODO 需要更改逻辑:新版本的位置请求是一直发送的.因此只需要通过接收定位线程获取数据即可
+		'''
 		if timeout_is_valid_response('2') == False:
 			print("[x] Response is timeout")
 			thread_stop_status	= 1
 		# Parse the position data
 		information_list	= response_data[:-1].split('/')
-	
+		'''
 		
+		#while True:
+		gps_data	= timeout_is_valid_gps_data()
+		if gps_data == None:
+			print("[x] gps_data has already been timout-gotten.")
+
+		'''
 		current_latitude	= float(information_list[2])
 		current_longitude	= float(information_list[3])
-
+		'''
+		print(f"current latitude:{gps_data['latitude']}") 
+		current_latitude	= float(gps_data['latitude'])
+		current_longitude   = float(gps_data['longitude'])
 
 		if points_number<remaining_path_points:
 			print("[x] invalid points_number")
 			thread_stop_status	= 1
-		target_latiitude		= float(coordinates_list[2*(points_number-remaining_path_points-1)])
-		target_longitude		= float(coordinates_list[2*(points_number-remaining_path_points-1)])
+		# 由于 coordinates_list 为 float 列表,因此直接使用即可
+		target_latitude		= coordinates_list[2*(points_number-remaining_path_points-1)]
+		target_longitude	= coordinates_list[2*(points_number-remaining_path_points-1)+1]
 		# Calculate the car's next move
-		current_heading_degree	= qmc5883p_data.get_latest_data	
-		target_heading_degree	= data_handler.calculate_heading_angle(current_latitude, current_longitude, target_latiitude, target_longitude)
+		current_heading_degree	= qmc5883p_data.get_latest_data()	
+		target_heading_degree	= data_handler.calculate_heading_angle(current_latitude, current_longitude, target_latitude, target_longitude)
 		'''
-		PID占位
+		角度PID占位
 		'''
-		move_data       = f""
+        sensor          = QMC5883P(bus_num=1)
+        target_angle    = target_heading_degree
+        # 0<target_angle<360,指向正北为0，顺时针增加
+	
+        if not sensor.initialize():
+            print("sensor initialized failed in main")
+            return
+
+        try:
+            while True:
+                if sensor.is_data_ready():
+                    # 检查是否溢出
+                    if sensor.is_overflow():
+                        print("[×] Data is overflow")
+                        # 读取状态寄存器来清除溢出标志
+                        sensor.read_status()
+                        continue
+
+                x_gauss, y_gauss, z_gauss   = sensor.read_calibrated_data()
+                angle_error                 = sensor.calculate_heading(x_gauss, y_gauss) - target_angle
+                if angle_error<-180:
+                    angle_error += 360
+                elif angle_error>180:
+                    angle_error -= 360
+
+                if pid.angle0 is None:
+                    pid.angle0 = angle_error
+                    print(f"{pid.angle0:6.1f}")
+                
+                cmd = pid.output_motor_speed(angle_error)
+                print(f"[info] turn cmd:{cmd}")
+                if angle_error <= pi_config.TARGET_DEGREE_THRESHOLD:
+                    
+                    print("[√] NAVIGATION thread: Turn successfully.")
+                    cmd = QUERY_NAVIGATION_TURN_HEADER+"/0/0/0/0*"
+                    raspberry_serial.serial_write(cmd.encode"utf-8")
+                    break
+                # TODO 发送相关串口逻辑
+                raspberry_serial.serial_write((QUERY_NAVIGATION_TURN_HEADER+cmd).encode("utf-8"))
+                time.sleep(0.3)
+        except KeyboardInterrupt:
+            # 恢复初始状态
+            pid.angle0 = None
+            print('/r'"-program closed-")
+        finally:
+            sensor.close()
+       
+		# TODO 先直接发送运动数据,而不经过PID, 方便测试
+        #if timeout_is_valid_response('4') == False:
+        #    print("[x] Response: turn move is failed")
+        #    thread_stop_status  = 1
+
+		# Calculate the car's linear_motion (uint :km)
+		distance	= car_motion_handler.haversine_distance(current_latitude, current_longitude, target_latitude, target_longitude)
+		# 保留3位小数
+		motion_time = distance/pi_config.NAVIGATION_CAR_SPEED
+		move_data	   = f"/{pi_config.NAVIGATION_DUTY_CYCLE}/{-(pi_config.NAVIGATION_DUTY_CYCLE)}/{motion_time}*"
 		# 假设已经有运动数据了
 		# Send the move query -> MCU
-		raspberry_serial.serial_write((QUERY_navigation_MOVING_HEADER+move_data).encode("utf-8"))
+		raspberry_serial.serial_write((QUERY_NAVIGATION_MOVING_HEADER+move_data).encode("utf-8"))
 		# response_data	= mcu_serial_received_data.get_latest_data
+
 		if timeout_is_valid_response('3') == False:
+
 			print("[x] invalid points number")
-		
+			thread_stop_status  = 1
 		
 		# PID-debug
 		if thread_stop_status == 1:
@@ -364,11 +461,12 @@ def navigation_thread(raspberry_serial, coordinates_list, points_number):
 		
 		remaining_path_points   = remaining_path_points-1
 	# Send the nevigaton stop query -> MCU
-	raspberry_serial.serial_write((QUERY_navigation_STOP).encode("utf-8"))
+	raspberry_serial.serial_write((QUERY_NAVIGATION_STOP).encode("utf-8"))
 	if timeout_is_valid_response('1') == False:
 		print("[x] Don't respond to the navigation stop signal")
 		thread_stop_status	= 1
 	# Stop the thread
+
 
 # 创建数据处理类（put和get都需要锁）
 class data_handler():
@@ -398,17 +496,17 @@ latest_data			= data_handler()
 
 mcu_response_data_with_parsing  = data_handler()
 # TODO 将 mcu_serial_received_data 替换为 mcu_navigation_response_data
-mcu_navigation_response_data    = data_handler()
+mcu_navigation_response_data	= data_handler()
 mcu_serial_received_data	= data_handler()
 qmc5883p_data			= data_handler()
 mcu_GPS_data			= data_handler()
 
 # 测试用例
 if __name__ == "__main__":
-        # 测试导航线程
-        coordinates_list        = ['116.3974673500868', '39.90873966065374', '116.3974673500868', '39.90873966065374']
-        points_number           = len(coordinates_list)
-        zero2w  = raspberry(pi_config.SERIAL_PATH, pi_config.BAUD_RATE, 1)
-        navigation_single_thread        = threading.thread(target=navigation_thread, args=(zero2w, coordinates_list, points_number))
+		# 测试导航线程
+		coordinates_list		= ['116.3974673500868', '39.90873966065374', '116.3974673500868', '39.90873966065374']
+		points_number		   = len(coordinates_list)
+		zero2w  = raspberry(pi_config.SERIAL_PATH, pi_config.BAUD_RATE, 1)
+		navigation_single_thread		= threading.thread(target=navigation_thread, args=(zero2w, coordinates_list, points_number))
 
 	
