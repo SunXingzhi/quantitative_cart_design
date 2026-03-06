@@ -38,13 +38,14 @@
  
 #define XBOX_AXIS_LX		0x00	// 左摇杆X轴 
 #define XBOX_AXIS_LY		0x01	// 左摇杆Y轴 
-#define XBOX_AXIS_RX		0x03	// 右摇杆Y轴 
-#define XBOX_AXIS_RY		0x04
-#define	XBOX_AXIS_LT		0X02	
-#define XBOX_AXIS_RT		0x05
+#define XBOX_AXIS_LT		0x02	// 左扳机键
+#define XBOX_AXIS_RX		0x03	// 右摇杆X轴 
+#define XBOX_AXIS_RY		0x04	// 右摇杆Y轴
+#define XBOX_AXIS_RT		0x05	// 右扳机键
 #define XBOX_AXIS_XX		0x06	// 方向键X轴 
 #define XBOX_AXIS_YY		0x07	// 方向键Y轴 
- 
+
+
 #define XBOX_AXIS_VAL_UP	-32767
 #define XBOX_AXIS_VAL_DOWN	32767
 #define XBOX_AXIS_VAL_LEFT	-32767

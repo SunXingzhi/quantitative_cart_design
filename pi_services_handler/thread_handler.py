@@ -71,7 +71,7 @@ def socket_send_thread():
 	while True:
 		try:
 			if connection_status == 1 and to_client_socket:
-				data = latest_data.get_latest_data()
+				data = socket_data.get_latest_data()
 				if data:
 					to_client_socket.send(data.encode('utf-8'))
 					print(f"[→] Sent: {data[:50]}...", end='\r')
@@ -201,38 +201,12 @@ def QMC5883P_get_angle_thread():
 # MCU 通讯线程
 
 
-
-# 通讯
-'''
-class communicator(raspberry):
-	def send_query(query_object, query_information):
-		# 检查数据类型
-		if isinstance(query_information, String) == False:
-			print("[x] Query information valiable must be 'String' type")
-
-		# 下位机使用串口
-		if query_object == 'MCU':
-			#respberry	= respberry(pi_config.SERIAL_PATH, pi_config.BAUD_RATE, 0)
-			raspberry.serial_write(query_information)
-		# 客户端使用Socket
-		elif query_object == 'Client':
-			latest_data.put_data(query_information)
-		else:
-			  print("[x] Invalid object type")
-			  return None
-	# 接收响应
-	def receive_response(query_object, query_information):
-		
-		# 检查数据类型
-		if isinstance(query_information, String) == False:
-			print("[x] Query information valiable must be 'String' type")
-		
-'''
 navigation_data_parsing_status  = 0
 gps_data_status				 = 0 # 0->数据没有准备好, 1->准备好了经纬度数据, data type: dictionary
 received_serial_status	= 0
 # [debug] 树莓派和MCU通信线程
 # 主要作用是将数据放入待处理数据队列中, 以供解析线程进行解析
+# 因为从MCU->pi的数据有两种,一种为导航请求的响应(string_type), 当前位置信息的数据(字典data_type)
 def pi_mcu_communication_thread(raspberry_serial):
 	global received_serial_status
 	received_data	= ""
@@ -245,9 +219,10 @@ def pi_mcu_communication_thread(raspberry_serial):
 		received_data	= raspberry_serial.serial_readline()
 		if received_data != None:
 			# 置位接收状态
-			#received_serial_status  = 1
+			received_serial_status  = 1
 			#mcu_serial_received_data.put_data(received_data)
 			mcu_response_data_with_parsing.put_data(received_data)
+			
 		else:
 			#received_serial_status  = 0
 			pass
@@ -255,28 +230,39 @@ def pi_mcu_communication_thread(raspberry_serial):
 # 解析mcu数据线程(主程序中还没开启)
 def parse_mcu_data_thread(raspberry_serial):
 	global  navigation_data_parsing_status
+	global  gps_data_status
+	global  received_serial_status
+    global  socket_data
+	print("[√] Open parse mcu data thread successfully.")
 	while True:
-		parsing_data	= mcu_response_data_with_parsing.get_latest_data()
-		if parsing_data!=None:
-
-			parsing_data	= data_handler.parse_mcu_response(parsing_data)
-			if isinstance(parsing_data, dict) == True:
-				mcu_GPS_data.put_data(parsing_data)
-				# TODO:后续进行读取逻辑,可使用状态机
-				gps_data_status = 1
-				print(f"gps_data:{parsing_data['latitude']}")
-			elif isinstance(parsing_data, str) == True:
-				# 导航数据解析完毕,状态置1, Nooooote:使用后需要置0
-				navigation_data_parsing_status  = 1
-				mcu_navigation_response_data.put_data(parsing_data)
+		if received_serial_status == 1:
+			parsing_data	= mcu_response_data_with_parsing.get_latest_data()
+			if parsing_data!=None:
+				print(f"parsing_data:{parsing_data}")
+				parsing_data	= data_handler.parse_mcu_response(parsing_data)
+				if isinstance(parsing_data, dict) == True:
+                    converted_navigation_information  = convert_gps_information(parsing_data['longitude'], parsing_data['latitude'])
+                    # 发送到GUI程序
+                    navigation_data = f"@p/{converted_navigation_information['latitude']}/{converted_navigation_information['longitude']}*"
+                    socket_data.put_data(navigation_data)
+                    # 提供给导航使用
+					mcu_GPS_data.put_data(converted_navigation_information)
+					gps_data_status = 1
+					print(f"gps_data:{parsing_data['latitude']}")
+				elif isinstance(parsing_data, str) == True:
+					# 导航数据解析完毕,状态置1, Nooooote:使用后需要置0
+					navigation_data_parsing_status  = 1
+					mcu_navigation_response_data.put_data(parsing_data)
+			else:
+				print("[x] Parse mcu data thread: parsing_data is invalid")
 # =========================== 导航部分 =========================
 # 请求
 
-QUERY_NAVIGATION_START		    = "@n/A*"
-QUERY_NAVIGATION_STOP		    = "@n/Z*"
-#QUERY_NAVIGATION_POSITION	    = "@n/G*"   # 已废弃
+QUERY_NAVIGATION_START			= "@n/A*"
+QUERY_NAVIGATION_STOP			= "@n/Z*"
+#QUERY_NAVIGATION_POSITION		= "@n/G*"   # 已废弃
 QUERY_NAVIGATION_MOVING_HEADER	= "@n/T"
-QUERY_NAVIGATION_TURN_HEADER    = "@n/R"
+QUERY_NAVIGATION_TURN_HEADER	= "@n/R"
 
 # [debug]使用超时判断响应是否成功接收
 # 由于多线程场景，超时解释器不适用signals信号(signals信号为LinuxAPI)
@@ -310,9 +296,6 @@ def is_valid_gps_data():
 	while True:
 		if gps_data_status == 1:
 			navigation_information  = mcu_GPS_data.get_latest_data()
-			# current_latitude	= navigation_information['latitude']
-			# current_longitude   = navigation_information['longitude']
-			
 			gps_data_status = 0
 				
 			break
@@ -362,19 +345,15 @@ def navigation_thread(raspberry_serial, coordinates_list, points_number):
 		information_list	= response_data[:-1].split('/')
 		'''
 		
-		#while True:
 		gps_data	= timeout_is_valid_gps_data()
 		if gps_data == None:
 			print("[x] gps_data has already been timout-gotten.")
-
-		'''
-		current_latitude	= float(information_list[2])
-		current_longitude	= float(information_list[3])
-		'''
+            # 清零点, 关闭线程
+            remaining_path_points   = 1
+            thread_stop_status  = 1
 		print(f"current latitude:{gps_data['latitude']}") 
-		current_latitude	= float(gps_data['latitude'])
-		current_longitude   = float(gps_data['longitude'])
-
+		current_latitude	= gps_data['latitude'])
+		current_longitude   = gps_data['longitude'])
 		if points_number<remaining_path_points:
 			print("[x] invalid points_number")
 			thread_stop_status	= 1
@@ -387,57 +366,59 @@ def navigation_thread(raspberry_serial, coordinates_list, points_number):
 		'''
 		角度PID占位
 		'''
-        sensor          = QMC5883P(bus_num=1)
-        target_angle    = target_heading_degree
-        # 0<target_angle<360,指向正北为0，顺时针增加
+		sensor		  = QMC5883P(bus_num=1)
+		target_angle	= target_heading_degree
+		# 0<target_angle<360,指向正北为0，顺时针增加
 	
-        if not sensor.initialize():
-            print("sensor initialized failed in main")
-            return
+		if not sensor.initialize():
+			print("sensor initialized failed in main")
+			return
 
-        try:
-            while True:
-                if sensor.is_data_ready():
-                    # 检查是否溢出
-                    if sensor.is_overflow():
-                        print("[×] Data is overflow")
-                        # 读取状态寄存器来清除溢出标志
-                        sensor.read_status()
-                        continue
+		try:
+			while True:
+				if sensor.is_data_ready():
+					# 检查是否溢出
+					if sensor.is_overflow():
+						print("[×] Data is overflow")
+						# 读取状态寄存器来清除溢出标志
+						sensor.read_status()
+						continue
 
-                x_gauss, y_gauss, z_gauss   = sensor.read_calibrated_data()
-                angle_error                 = sensor.calculate_heading(x_gauss, y_gauss) - target_angle
-                if angle_error<-180:
-                    angle_error += 360
-                elif angle_error>180:
-                    angle_error -= 360
+				x_gauss, y_gauss, z_gauss   = sensor.read_calibrated_data()
+				angle_error				 = sensor.calculate_heading(x_gauss, y_gauss) - target_angle
+				if angle_error<-180:
+					angle_error += 360
+				elif angle_error>180:
+					angle_error -= 360
 
-                if pid.angle0 is None:
-                    pid.angle0 = angle_error
-                    print(f"{pid.angle0:6.1f}")
-                
-                cmd = pid.output_motor_speed(angle_error)
-                print(f"[info] turn cmd:{cmd}")
-                if angle_error <= pi_config.TARGET_DEGREE_THRESHOLD:
-                    
-                    print("[√] NAVIGATION thread: Turn successfully.")
-                    cmd = QUERY_NAVIGATION_TURN_HEADER+"/0/0/0/0*"
-                    raspberry_serial.serial_write(cmd.encode"utf-8")
-                    break
-                # TODO 发送相关串口逻辑
-                raspberry_serial.serial_write((QUERY_NAVIGATION_TURN_HEADER+cmd).encode("utf-8"))
-                time.sleep(0.3)
-        except KeyboardInterrupt:
-            # 恢复初始状态
-            pid.angle0 = None
-            print('/r'"-program closed-")
-        finally:
-            sensor.close()
-       
+				if pid.angle0 is None:
+					pid.angle0 = angle_error
+					print(f"{pid.angle0:6.1f}")
+				
+				cmd = pid.output_motor_speed(angle_error)
+				print(f"[info] turn cmd:{cmd}")
+				if angle_error <= pi_config.TARGET_DEGREE_THRESHOLD:
+					
+					print("[√] NAVIGATION thread: Turn successfully.")
+					cmd = QUERY_NAVIGATION_TURN_HEADER+"/0/0/0/0*"
+					raspberry_serial.serial_write(cmd.encode("utf-8"))
+					break
+				# TODO 发送相关串口逻辑
+				raspberry_serial.serial_write((QUERY_NAVIGATION_TURN_HEADER+cmd).encode("utf-8"))
+				time.sleep(0.3)
+		except Exception as e:
+			# 恢复初始状态
+			pid.angle0 = None
+            print(f'/r'"-program closed- Reason:{e}")
+            thread_stop_status  = 1
+		finally:
+			sensor.close()
+		# 开始发送直线运动数据
+
 		# TODO 先直接发送运动数据,而不经过PID, 方便测试
-        #if timeout_is_valid_response('4') == False:
-        #    print("[x] Response: turn move is failed")
-        #    thread_stop_status  = 1
+		#if timeout_is_valid_response('4') == False:
+		#	print("[x] Response: turn move is failed")
+		#	thread_stop_status  = 1
 
 		# Calculate the car's linear_motion (uint :km)
 		distance	= car_motion_handler.haversine_distance(current_latitude, current_longitude, target_latitude, target_longitude)
@@ -449,10 +430,9 @@ def navigation_thread(raspberry_serial, coordinates_list, points_number):
 		raspberry_serial.serial_write((QUERY_NAVIGATION_MOVING_HEADER+move_data).encode("utf-8"))
 		# response_data	= mcu_serial_received_data.get_latest_data
 
-		if timeout_is_valid_response('3') == False:
-
-			print("[x] invalid points number")
-			thread_stop_status  = 1
+		#if timeout_is_valid_response('3') == False:
+		#	print("[x] invalid points number")
+		#	thread_stop_status  = 1
 		
 		# PID-debug
 		if thread_stop_status == 1:
@@ -500,6 +480,7 @@ mcu_navigation_response_data	= data_handler()
 mcu_serial_received_data	= data_handler()
 qmc5883p_data			= data_handler()
 mcu_GPS_data			= data_handler()
+socket_data         = data_handler()
 
 # 测试用例
 if __name__ == "__main__":

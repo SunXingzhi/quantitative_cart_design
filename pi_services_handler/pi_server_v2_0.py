@@ -12,18 +12,6 @@ import	ctypes
 from car_motion_handler import car_status
 # 程序启动标志
 
-print(''' \033[36m					
-░████  ░████████████████████████████████████  ░████	 ░████
- ░██  ░██				 ░██   ░██	   
-  ░██░██  ░██   ░█████	 ░██████	  ░██	░████████  ░██
-   ░███   ░██ ░██	░██ ░██	░██	░███	░██	░██ ░██
-  ░██░██  ░██ ░██	░██ ░██	░██   ░██	  ░██	░██ ░██
- ░██  ░██ ░██ ░██	░██ ░██   ░███  ░██	   ░██	░██ ░██
-░████  ░█████████   ░████  ░████░██ ░██████████████   ░███████
-				░██		   ░██	  
-  ░███████████████████████████████		 ░██████	   
-\033[0m								 
-''')
 
 # ======================网络socket创建及多线程===================
 # global server data buffer
@@ -54,30 +42,17 @@ GUI_send_thread.start()
 # ======================= 主程序 =======================
 if __name__ == "__main__":
 	# 初始化串口
-	# try:
-	# 	# 使用非堵塞模式，来接收来自MCU的串口数据
-	# 	mcu_serial	= serial.Serial(pi_config.SERIAL_PATH, pi_config.BAUD_RATE, timeout=0)
-	# 	# input_serial	= serial.Serial(pi_config.SERIAL_PATH, pi_config.BAUD_RATE, timeout=1)
-	# 	if mcu_serial.isOpen():
-	# 		print("串口打开成功")
-	# 		mcu_serial.write(b"Serial open successfully\n")
-	# 	else:
-	# 		print("串口打开失败")
-	# 		sys.exit(1)
-	# except Exception as e:
-	# 	print(f"串口初始化失败: {e}")
-	# 	sys.exit(1)
 	send_counter	= 0
 	# 串口初始化：使用timeout = None, 代表接收数据时为堵塞模式（这里使用的seria.readline())
 	zero2w	= thread_handler.raspberry(pi_config.SERIAL_PATH, pi_config.BAUD_RATE, pi_config.TIMEOUT_TIME)
 	# 开启与MCU的串口通信线程（读数据）
 	pi_receive_MCU_thread	= threading.Thread(target=thread_handler.pi_mcu_communication_thread, args=(zero2w,), name="pi_mcu_communicator")
 	pi_receive_MCU_thread.start()
-	print("[√] pi received_data thread open successfully\n")
+	# print("[√] pi received_data thread open successfully")
 	# 开启MCU数据解析线程
 	pi_pasrsing_MCU_thread  = threading.Thread(target=thread_handler.parse_mcu_data_thread, args=(zero2w,), name="pi_MCU_data_parser")
 	pi_pasrsing_MCU_thread.start()
-	print("[√] pi parsing_data thread open successfully\n")
+	# print("[√] pi parsing_data thread open successfully")
 
 	# 打开手柄设备
 	device_path = pi_config.DEVICE_PATH  # 转为 bytes
@@ -109,22 +84,25 @@ if __name__ == "__main__":
 				if query_type == "points":
 					# TODO 需要变成浮点数列表
 					# 是否需要加入错误处理?
-					coordinates_list	= list(map(float, (thread_handler.received_data[:-1]).split('/')))
-					coordinates_number	= len(coordinates_list)-1
+					print("received points")
+					coordinates_list	= list(map(float, (thread_handler.received_data[3:-1]).split('/')))
+					coordinates_number	= len(coordinates_list)
+					points_number	= len(coordinates_list)/2
 					print(f"coordinates_number length:{coordinates_number}")
 					if coordinates_number%2 != 0 or (coordinates_number/2)>10:
 						print("[×] Invalid coordinates number")
 						coordinates_list	= []	# clean the list
-						points_number	= len(coordinates_list)/2
+					
 						# 还需要清理点	
+						points_number	= 0
 				if query_type == "Nstart":
 					# 检查当前系统是否有坐标点
 					if points_number == 0:
 						print("[×] Invalid coordinates number")
 					# 开启导航线程
-				else:
-						navigation_single_thread	= threading.Thread(target=thread_handler.navigation_thread, args=(zero2w, coordinates_list, points_number), name="nevigation_thread_handler")
-						navigation_single_thread.start()
+					navigation_single_thread	= threading.Thread(target=thread_handler.navigation_thread, args=(zero2w, coordinates_list, points_number), name="nevigation_thread_handler")
+					navigation_single_thread.start()
+	
 				if query_type == "Pget":	# Client->GUI:当前小车位置请求
 					#print("13424")
 					continue	
@@ -149,7 +127,7 @@ if __name__ == "__main__":
 			# 解析电机速度
 			motors_speed = car_motion_handler.parsed_motors_speed(joystick_data['v_cx'], joystick_data['omega'])
 			# 解析舵机角度
-            
+			
 			motors_angle = car_motion_handler.parsed_motors_angle(joystick_data['lt'], joystick_data['rt'])
 			# print(f"\t\t\t\t\t\lx:{joystick_data['lx']}", end='\r')
 			# 构造串口协议字符串
@@ -191,7 +169,7 @@ if __name__ == "__main__":
 				# send_status = 1
 			
 			# # 控制循环频率 ≈ 50Hz
-			time.sleep(0.01)
+			time.sleep(0.001)
 
 
 

@@ -52,7 +52,7 @@ def parse_mcu_response(response_string):
 	if len(response_string)==0 or response_string==None:
 		print(f"{MCU_error_message_header}empty string")
 		return None
-    response_header	= response_string[1]
+	response_header	= response_string[1]
 	
 	end_char	= response_string[-2]
 	if end_char!='*':
@@ -76,7 +76,7 @@ def parse_mcu_response(response_string):
 
 # 构造串口命令函数
 def generate_serial_cmd(header, cmd):
-    return header+cmd+"*"
+	return header+cmd+"*"
 
 from math import sin, cos, atan2
 def calculate_heading_angle(a_latitude, a_longitude, b_latitude, b_longitude):
@@ -102,7 +102,29 @@ def calculate_heading_angle(a_latitude, a_longitude, b_latitude, b_longitude):
 def calculate_revolve_data_from_heading_angle(heading_degree):
 	return
 	
+# 转换定位信息函数
+# 参数:经度纬度数据.注意格式为:
+# 经度(Longitude): dddmmmmmmm, 纬度(latitude): ddmmmmmmm
+def convert_gps_information(longitude, latitude):
+    # 提取经纬度的d, m
+    longitude_d     = longitude[:2]
+    longitude_m     = longitude[2:]
+    latitude_d      = latitude[:3]
+    latitude_m      = latitude[3:]
 
+    # 转换浮点数
+    longitude_a = float(longitude_d)
+    longitude_b = float(longitude_m)
+    latitude_a  = float(latitude_d)
+    latitude_b  = float(latitude_m)
+    
+    # 计算经纬度
+    longitude   = longitude_d+(longitude_m/6000000)
+    latitude   = latitude_d+(latitude_m/6000000)
+    return {
+        'longitude':    longitude,
+        'latitude':     latitude
+    }
 # 处理请求函数
 # 针对命令类型，做出对应响应
 # 如果是坐标命令(@n/.../*)，命令中会自带坐标点集合。最多10个点
