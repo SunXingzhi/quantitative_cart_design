@@ -233,6 +233,7 @@ def parse_mcu_data_thread(raspberry_serial):
 	global  gps_data_status
 	global  received_serial_status
     global  socket_data
+
 	print("[√] Open parse mcu data thread successfully.")
 	while True:
 		if received_serial_status == 1:
@@ -252,6 +253,7 @@ def parse_mcu_data_thread(raspberry_serial):
 				elif isinstance(parsing_data, str) == True:
 					# 导航数据解析完毕,状态置1, Nooooote:使用后需要置0
 					navigation_data_parsing_status  = 1
+
 					mcu_navigation_response_data.put_data(parsing_data)
 			else:
 				print("[x] Parse mcu data thread: parsing_data is invalid")
@@ -318,11 +320,12 @@ def timeout_is_valid_gps_data():
 def navigation_thread(raspberry_serial, coordinates_list, points_number):
 	# global	heading, direction	# QMC5883P 测量的航向角
 	global		received_serial_status
-	global	  gps_data_status
+	global      gps_data_status
+    global      move_finish_status
 
 	remaining_path_points	= points_number
-	thread_stop_status	= 0
-	response_data		= ""
+	thread_stop_status	    = 0
+	response_data		    = ""
 		
 	# Send the navigation start query -> MCU
 	raspberry_serial.serial_write(QUERY_NAVIGATION_START.encode("utf-8"))
@@ -429,7 +432,8 @@ def navigation_thread(raspberry_serial, coordinates_list, points_number):
 		# Send the move query -> MCU
 		raspberry_serial.serial_write((QUERY_NAVIGATION_MOVING_HEADER+move_data).encode("utf-8"))
 		# response_data	= mcu_serial_received_data.get_latest_data
-
+        while True:
+            if 
 		#if timeout_is_valid_response('3') == False:
 		#	print("[x] invalid points number")
 		#	thread_stop_status  = 1
