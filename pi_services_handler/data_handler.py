@@ -60,19 +60,21 @@ def parse_mcu_response(response_string):
 		return None
 	
 	# 删除后缀符号(\n')
-	response_string = response_string[:-1]
+	response_string = response_string[:-2]
 	match response_header:
-		case 'n':
+        case 'm':
+        case 'n':
 			return response_string
 		case 'g':	# 小车当前定位数据(#g/latitude/longitude*)
 			# 提取经纬度信息
 			latitude	= response_string.split('/')[1]
-			longitude	= response_string.split('/')[-1]
+            longitude	= response_string.split('/')[-1]
 			
 			return {
 				'latitude':	f"{latitude}",
 				'longitude':	f"{longitude}"
-			}	
+			}
+        
 
 # 构造串口命令函数
 def generate_serial_cmd(header, cmd):
